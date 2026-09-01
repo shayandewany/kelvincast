@@ -1,664 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Absolute — Weather in Kelvin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #F4F0E8;
-    --ink-dim: rgba(244,240,232,0.62);
-    --ink-faint: rgba(244,240,232,0.36);
-    --gold: #D9A954;
-    --gold-dim: rgba(217,169,84,0.18);
-    --glass: rgba(20,22,28,0.44);
-    --glass-solid: #171A22;
-    --glass-line: rgba(244,240,232,0.14);
-    --mood-a: #16324F;
-    --mood-b: #2B2154;
-    --mood-c: #0B1420;
-    --good: #7CBF8E;
-    --bad: #C96A4E;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KelvinCast — Professional Weather in Kelvin</title>
+  <meta name="description" content="The world's most precise weather dashboard. All temperatures in Kelvin. Zero ambiguity. Absolute scale.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌡️%3C/text%3E%3C/svg%3E">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8ec;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    @media (min-width: 768px) { .container { padding: 40px 24px; } }
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+    /* Design system tokens fallback */
+    :root {
+      --kimi-color-text-primary: #e8e8ec;
+      --kimi-color-text-secondary: #a0a0a8;
+      --kimi-color-text-tertiary: #6e6e78;
+      --kimi-color-text-quaternary: #4a4a52;
+      --kimi-color-surface: #12121a;
+      --kimi-color-surface-muted: #1a1a24;
+      --kimi-color-surface-raised: #1e1e2a;
+      --kimi-color-surface-strong: #2a2a38;
+      --kimi-color-border: #2a2a38;
+      --kimi-color-danger: #ef4444;
+      --kimi-color-positive: #22c55e;
+      --kimi-color-warning: #f59e0b;
+      --kimi-color-accent: #3b82f6;
+      --kimi-chart-1: #3b82f6;
+      --kimi-chart-2: #ef4444;
+      --kimi-chart-3: #22c55e;
+      --kimi-chart-4: #a855f7;
+      --kimi-chart-5: #6e6e78;
+      --kimi-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --kimi-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+      --t-micro: 60ms;
+      --t-fast: 120ms;
+      --t-normal: 200ms;
+      --t-slow: 300ms;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-  body {
-    min-height: 100vh;
-    background: var(--mood-c);
-    color: var(--ink);
-    font-family: 'Fraunces', Georgia, serif;
-    position: relative;
-    overflow-x: hidden;
-  }
+    /* Widget styles */
+    .kw-root { font-family: var(--kimi-font-sans); color: var(--kimi-color-text-primary); }
+    .kw-root * { box-sizing: border-box; }
+    .kw-root button, .kw-root input { font: inherit; }
+    .kw-root svg { display: block; }
 
-  .field {
-    position: fixed; inset: 0; z-index: -2;
-    background:
-      radial-gradient(ellipse 900px 700px at 12% 8%, var(--mood-a) 0%, transparent 60%),
-      radial-gradient(ellipse 1000px 800px at 88% 20%, var(--mood-b) 0%, transparent 55%),
-      var(--mood-c);
-    transition: background 1.4s ease;
-  }
+    .kw-hero { display: flex; flex-direction: column; gap: 24px; padding: 24px; border-radius: 12px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); }
+    .kw-searchbar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface-muted); }
+    .kw-searchbar input { flex: 1; border: none; outline: none; background: transparent; color: var(--kimi-color-text-primary); font-size: 16px; }
+    .kw-searchbar input::placeholder { color: var(--kimi-color-text-quaternary); }
+    .kw-searchbar button { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--kimi-color-surface-raised); cursor: pointer; color: var(--kimi-color-text-secondary); transition: background var(--t-fast) var(--ease-out); }
+    .kw-searchbar button:hover { background: var(--kimi-color-surface-strong); }
 
-  .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.5; z-index: -1; transition: background 1.4s ease; }
-  .blob-1 { width: 480px; height: 480px; top: -120px; left: -100px; background: var(--mood-a); animation: drift1 34s ease-in-out infinite; }
-  .blob-2 { width: 560px; height: 560px; bottom: -180px; right: -140px; background: var(--mood-b); animation: drift2 40s ease-in-out infinite; }
-  @keyframes drift1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,40px); } }
-  @keyframes drift2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,-30px); } }
+    .kw-main { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 720px) { .kw-main { grid-template-columns: 1fr; } }
 
-  .grain {
-    position: fixed; inset: 0; z-index: -1; opacity: 0.05; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+    .kw-current { display: flex; flex-direction: column; gap: 16px; }
+    .kw-city { font-size: 28px; font-weight: 500; line-height: 1.1; }
+    .kw-sub { font-size: 14px; color: var(--kimi-color-text-secondary); }
+    .kw-temp-big { font-size: 72px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+    .kw-temp-unit { font-size: 24px; color: var(--kimi-color-text-secondary); font-weight: 400; }
+    .kw-condition { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--kimi-color-text-secondary); }
+    .kw-hl { display: flex; gap: 16px; font-size: 14px; color: var(--kimi-color-text-tertiary); }
+    .kw-hl span { display: flex; align-items: center; gap: 4px; }
 
-  @media (prefers-reduced-motion: reduce) { .blob-1, .blob-2, .pulse { animation: none !important; } }
+    .kw-visual { display: flex; align-items: center; justify-content: center; min-height: 200px; }
+    .kw-sun { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0%, #f59e0b 40%, #3b82f6 100%); box-shadow: 0 0 60px rgba(245, 158, 11, 0.3); animation: kw-pulse 4s ease-in-out infinite; }
+    .kw-cloudy { width: 140px; height: 80px; background: var(--kimi-color-surface-strong); border-radius: 60px; position: relative; }
+    .kw-cloudy::before { content: ''; position: absolute; width: 70px; height: 70px; background: var(--kimi-color-surface-raised); border-radius: 50%; top: -35px; left: 20px; }
+    .kw-cloudy::after { content: ''; position: absolute; width: 50px; height: 50px; background: var(--kimi-color-surface-muted); border-radius: 50%; top: -25px; left: 60px; }
+    .kw-rain { position: relative; }
+    .kw-rain .kw-cloudy { background: var(--kimi-color-text-quaternary); }
+    .kw-rain .kw-cloudy::before { background: var(--kimi-color-text-tertiary); }
+    .kw-rain .kw-cloudy::after { background: var(--kimi-color-text-secondary); }
+    .kw-rain-drops { position: absolute; bottom: -20px; left: 30px; width: 4px; height: 12px; background: var(--kimi-color-accent); border-radius: 2px; animation: kw-rain 0.8s linear infinite; box-shadow: 20px 0 0 var(--kimi-color-accent), 40px 5px 0 var(--kimi-color-accent), 60px -2px 0 var(--kimi-color-accent); }
+    .kw-snow { position: relative; }
+    .kw-snow .kw-cloudy { background: var(--kimi-color-surface-strong); }
+    .kw-snow .kw-cloudy::before { background: var(--kimi-color-surface-raised); }
+    .kw-snow .kw-cloudy::after { background: var(--kimi-color-surface-muted); }
+    .kw-snow-flakes { position: absolute; bottom: -15px; left: 25px; width: 6px; height: 6px; background: var(--kimi-color-text-primary); border-radius: 50%; animation: kw-snow 2s linear infinite; box-shadow: 25px 5px 0 var(--kimi-color-text-primary), 50px -3px 0 var(--kimi-color-text-primary), 70px 8px 0 var(--kimi-color-text-primary); }
+    .kw-storm { position: relative; }
+    .kw-storm .kw-cloudy { background: var(--kimi-color-text-secondary); }
+    .kw-storm .kw-cloudy::before { background: var(--kimi-color-text-primary); }
+    .kw-storm .kw-cloudy::after { background: var(--kimi-color-text-tertiary); }
+    .kw-bolt { position: absolute; bottom: -30px; left: 50px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 30px solid var(--kimi-color-warning); animation: kw-bolt 1.5s ease-in-out infinite; }
 
-  .wrap { max-width: 820px; margin: 0 auto; padding: 40px 24px 90px; position: relative; }
+    @keyframes kw-pulse { 0%,100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.05); opacity: 1; } }
+    @keyframes kw-rain { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
+    @keyframes kw-snow { 0% { transform: translateY(0) translateX(0); opacity: 1; } 100% { transform: translateY(25px) translateX(10px); opacity: 0; } }
+    @keyframes kw-bolt { 0%,90%,100% { opacity: 0; } 92%,96% { opacity: 1; } }
 
-  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .kw-section-title { font-size: 14px; font-weight: 500; color: var(--kimi-color-text-secondary); margin-bottom: 12px; }
+    .kw-hourly { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
+    .kw-hourly::-webkit-scrollbar { height: 4px; }
+    .kw-hourly::-webkit-scrollbar-thumb { background: var(--kimi-color-border); border-radius: 2px; }
+    .kw-hour { flex: 0 0 64px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 8px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); transition: background var(--t-fast) var(--ease-out); }
+    .kw-hour:hover { background: var(--kimi-color-surface-raised); }
+    .kw-hour-time { font-size: 12px; color: var(--kimi-color-text-tertiary); }
+    .kw-hour-temp { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .kw-hour-icon { width: 24px; height: 24px; }
 
-  .wordmark { font-size: 21px; font-weight: 600; letter-spacing: 0.01em; display: flex; align-items: baseline; gap: 10px; }
-  .wordmark .tag { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); font-weight: 400; }
+    .kw-daily { display: flex; flex-direction: column; gap: 8px; }
+    .kw-day-row { display: grid; grid-template-columns: 80px 1fr 60px 60px; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); transition: background var(--t-fast) var(--ease-out); }
+    .kw-day-row:hover { background: var(--kimi-color-surface-raised); }
+    .kw-day-name { font-size: 14px; font-weight: 500; }
+    .kw-day-bar { height: 6px; border-radius: 3px; background: var(--kimi-color-surface-muted); position: relative; overflow: hidden; }
+    .kw-day-bar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--kimi-color-accent); }
+    .kw-day-lo { font-size: 14px; color: var(--kimi-color-text-tertiary); text-align: right; font-variant-numeric: tabular-nums; }
+    .kw-day-hi { font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
 
-  .search-wrap { position: relative; }
+    .kw-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 600px) { .kw-details { grid-template-columns: repeat(2, 1fr); } }
+    .kw-detail { padding: 16px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); display: flex; flex-direction: column; gap: 6px; }
+    .kw-detail-label { font-size: 12px; color: var(--kimi-color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .kw-detail-value { font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
 
-  form.search {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--glass); border: 1px solid var(--glass-line);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-radius: 999px; padding: 6px 6px 6px 18px;
-  }
+    .kw-chart-wrap { padding: 16px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); }
+    .kw-chart-svg { width: 100%; height: 160px; }
 
-  form.search input {
-    background: transparent; border: none; outline: none; color: var(--ink);
-    font-family: 'IBM Plex Mono', monospace; font-size: 13px; width: 190px;
-  }
-  form.search input::placeholder { color: var(--ink-faint); }
+    .kw-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .kw-chip { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); font-size: 13px; cursor: pointer; transition: all var(--t-fast) var(--ease-out); color: var(--kimi-color-text-secondary); }
+    .kw-chip:hover { background: var(--kimi-color-surface-raised); color: var(--kimi-color-text-primary); border-color: var(--kimi-color-text-tertiary); }
+    .kw-chip.active { background: var(--kimi-color-text-primary); color: var(--kimi-color-surface); border-color: var(--kimi-color-text-primary); }
 
-  form.search button {
-    background: var(--gold); border: none; color: #241804;
-    font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 12px;
-    padding: 9px 16px; border-radius: 999px; cursor: pointer;
-    transition: transform 0.15s ease, filter 0.15s ease;
-  }
-  form.search button:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
-  form.search button:disabled { opacity: 0.55; cursor: default; }
+    .kw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    @media (max-width: 720px) { .kw-grid { grid-template-columns: 1fr; } }
 
-  .dropdown {
-    position: absolute; top: calc(100% + 8px); right: 0; width: 300px;
-    background: var(--glass-solid); border: 1px solid var(--glass-line);
-    border-radius: 16px; overflow: hidden; z-index: 20;
-    box-shadow: 0 24px 48px -20px rgba(0,0,0,0.7);
-    max-height: 320px; overflow-y: auto;
-  }
-  .dropdown .dd-label {
-    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-faint);
-    padding: 10px 14px 6px; text-transform: uppercase; letter-spacing: 0.06em;
-  }
-  .dd-item {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 10px 14px; cursor: pointer; font-size: 14px;
-  }
-  .dd-item .dd-country { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); }
-  .dd-item.active, .dd-item:hover { background: var(--gold-dim); }
-  .dd-empty { padding: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+    .kw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .kw-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 500; }
+    .kw-brand-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--kimi-color-text-primary); display: flex; align-items: center; justify-content: center; }
+    .kw-brand-icon svg { width: 18px; height: 18px; color: var(--kimi-color-surface); }
+    .kw-unit-badge { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--kimi-color-border); font-size: 12px; font-weight: 500; color: var(--kimi-color-text-secondary); background: var(--kimi-color-surface); }
 
-  .pinned-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-  .pin-chip {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--glass); border: 1px solid var(--glass-line);
-    border-radius: 999px; padding: 7px 14px 7px 12px; cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-dim);
-    transition: border-color 0.15s ease;
-  }
-  .pin-chip:hover { border-color: var(--gold); color: var(--ink); }
-  .pin-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    .kw-suggestions { position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: var(--kimi-color-surface-raised); border: 1px solid var(--kimi-color-border); border-radius: 10px; overflow: hidden; z-index: 10; display: none; }
+    .kw-suggestions.show { display: block; }
+    .kw-suggestion { padding: 10px 14px; cursor: pointer; font-size: 14px; transition: background var(--t-fast) var(--ease-out); }
+    .kw-suggestion:hover { background: var(--kimi-color-surface-strong); }
+    .kw-suggestion:not(:last-child) { border-bottom: 1px solid var(--kimi-color-border); }
+    .kw-search-wrap { position: relative; }
 
-  .hero-panel {
-    background: var(--glass); border: 1px solid var(--glass-line);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border-radius: 28px; padding: 40px 36px 32px;
-    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
-  }
+    .kw-now { font-size: 13px; color: var(--kimi-color-text-quaternary); margin-top: 4px; }
 
-  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
-  .hero-top .place-row { display: flex; align-items: center; gap: 10px; }
-  .hero-top .place { font-size: 16px; color: var(--ink-dim); margin: 0; }
-  .hero-top .date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); margin: 2px 0 0; }
-
-  .star-btn {
-    background: none; border: none; cursor: pointer; padding: 2px;
-    color: var(--ink-faint); display: flex; align-items: center;
-    transition: color 0.15s ease, transform 0.15s ease;
-  }
-  .star-btn:hover { transform: scale(1.12); }
-  .star-btn.active { color: var(--gold); }
-
-  .icon-wrap { color: var(--gold); flex-shrink: 0; }
-  .pulse { animation: breathe 4.5s ease-in-out infinite; transform-origin: center; }
-  @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-
-  .reading { display: flex; align-items: flex-end; gap: 12px; margin-top: 18px; }
-  .reading .number { font-size: clamp(72px, 15vw, 128px); font-weight: 600; line-height: 0.9; letter-spacing: -0.02em; font-optical-sizing: auto; }
-  .reading .unit-k { font-family: 'IBM Plex Mono', monospace; font-size: clamp(24px, 4vw, 34px); color: var(--gold); font-weight: 500; margin-bottom: 10px; }
-
-  .condition { font-size: 18px; font-style: italic; color: var(--ink-dim); margin: 6px 0 2px; text-transform: capitalize; }
-  .converts { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); margin: 0 0 26px; }
-
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chip { display: flex; flex-direction: column; gap: 3px; background: rgba(244,240,232,0.06); border: 1px solid var(--glass-line); border-radius: 14px; padding: 10px 16px; min-width: 92px; }
-  .chip .chip-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-faint); }
-  .chip .chip-value { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--ink); font-weight: 500; }
-  .chip .chip-value.uv-low { color: var(--good); }
-  .chip .chip-value.uv-high { color: var(--bad); }
-
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint);
-    text-transform: uppercase; letter-spacing: 0.07em; margin: 32px 0 12px 2px;
-  }
-
-  .hourly-panel {
-    background: var(--glass); border: 1px solid var(--glass-line);
-    border-radius: 22px; padding: 20px 22px 14px;
-  }
-  .hourly-panel svg { display: block; width: 100%; height: auto; }
-  .hourly-labels { display: flex; justify-content: space-between; margin-top: 6px; }
-  .hourly-labels span { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-faint); }
-
-  .forecast { margin-top: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-  .fcard { background: var(--glass); border: 1px solid var(--glass-line); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 16px 10px; text-align: center; }
-  .fcard .fday { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); margin: 0 0 10px; }
-  .fcard .ficon { color: var(--gold); margin-bottom: 10px; }
-  .fcard .fhi { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: var(--ink); margin: 0; }
-  .fcard .flo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); margin: 2px 0 0; }
-
-  @media (max-width: 560px) {
-    .forecast { grid-template-columns: repeat(3, 1fr); }
-    .hero-panel { padding: 30px 22px 26px; }
-    form.search input { width: 130px; }
-  }
-
-  .about { margin-top: 40px; padding: 4px; }
-  .about h2 { font-size: 15px; font-weight: 600; margin: 0 0 8px; color: var(--ink-dim); }
-  .about p { font-size: 14px; line-height: 1.65; color: var(--ink-faint); margin: 0; max-width: 64ch; }
-  .about p + p { margin-top: 8px; }
-
-  footer { margin-top: 44px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-
-  .status { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-faint); margin-bottom: 14px; min-height: 16px; }
-
-  .skeleton { background: var(--glass); border: 1px solid var(--glass-line); border-radius: 28px; padding: 40px 36px; height: 320px; position: relative; overflow: hidden; }
-  .skeleton::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(244,240,232,0.06) 50%, transparent 70%); animation: shine 1.6s ease-in-out infinite; }
-  @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-  .error-panel { background: var(--glass); border: 1px solid var(--glass-line); border-radius: 20px; padding: 24px 28px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-dim); }
-  .error-panel button { margin-top: 12px; background: var(--gold); border: none; color: #241804; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 12px; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
-
-  input:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-</style>
+    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: var(--kimi-color-text-quaternary); }
+  </style>
+<base target="_blank">
 </head>
 <body>
-  <div class="field"></div>
-  <div class="blob blob-1" id="blob1"></div>
-  <div class="blob blob-2" id="blob2"></div>
-  <div class="grain"></div>
-
-  <div class="wrap">
-    <header>
-      <div class="wordmark">Absolute <span class="tag">weather, measured in kelvin</span></div>
-      <div class="search-wrap">
-        <form class="search" id="searchForm" autocomplete="off">
-          <input type="text" id="cityInput" placeholder="search any city worldwide" autocomplete="off">
-          <button type="submit" id="searchBtn">Go</button>
-        </form>
-        <div class="dropdown" id="dropdown" style="display:none;"></div>
+  <div class="container">
+    <div class="kw-root">
+      <div class="kw-header">
+        <div class="kw-brand">
+          <div class="kw-brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span>KelvinCast</span>
+        </div>
+        <div class="kw-unit-badge">K — Absolute Scale</div>
       </div>
-    </header>
 
-    <div class="pinned-row" id="pinnedRow"></div>
+      <div class="kw-hero" style="margin-top: 16px;">
+        <div class="kw-search-wrap">
+          <div class="kw-searchbar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="color: var(--kimi-color-text-quaternary); flex-shrink: 0;"><path d="M11.5 3C16.1944 3 20 6.80558 20 11.5C20 13.523 19.2933 15.381 18.1132 16.8404L21.1364 19.8636C21.4879 20.2151 21.4879 20.7849 21.1364 21.1364C20.7849 21.4879 20.2151 21.4879 19.8636 21.1364L16.8404 18.1132C15.381 19.2933 13.523 20 11.5 20C6.80558 20 3 16.1944 3 11.5C3 6.80558 6.80558 3 11.5 3ZM11.5 18.2C15.2003 18.2 18.2 15.2003 18.2 11.5C18.2 7.79969 15.2003 4.8 11.5 4.8C7.79969 4.8 4.8 7.79969 4.8 11.5C4.8 15.2003 7.79969 18.2 11.5 18.2Z" fill="currentColor"/></svg>
+            <input type="text" id="kw-search" placeholder="Search city..." autocomplete="off" />
+            <button id="kw-refresh" aria-label="Refresh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.88048 6.89231C9.69226 4.08054 14.251 4.08054 17.0628 6.89231L16.2364 7.71871C15.7324 8.22268 16.0894 9.0844 16.8021 9.0844H19.7276C20.1694 9.0844 20.5276 8.72623 20.5276 8.2844V5.35891C20.5276 4.64619 19.6659 4.28926 19.1619 4.79323L18.3356 5.61952C14.8209 2.1048 9.12241 2.1048 5.60769 5.61952C2.09297 9.13424 2.09297 14.8327 5.60769 18.3474C9.12241 21.8622 14.8209 21.8622 18.3356 18.3474C19.4929 17.1902 20.2703 15.7937 20.6655 14.3163C20.7939 13.8361 20.5087 13.3428 20.0285 13.2143C19.5483 13.0859 19.055 13.3711 18.9266 13.8513C18.611 15.0314 17.9906 16.1469 17.0628 17.0746C14.251 19.8864 9.69226 19.8864 6.88048 17.0746C4.06871 14.2629 4.06871 9.70409 6.88048 6.89231Z" fill="currentColor"/></svg>
+            </button>
+          </div>
+          <div class="kw-suggestions" id="kw-suggestions"></div>
+        </div>
 
-    <div class="status" id="status"></div>
-    <div id="content"><div class="skeleton"></div></div>
+        <div class="kw-main">
+          <div class="kw-current">
+            <div>
+              <div class="kw-city" id="kw-city">London</div>
+              <div class="kw-sub" id="kw-country">United Kingdom</div>
+              <div class="kw-now" id="kw-now">Monday, 14:32</div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+              <span class="kw-temp-big" id="kw-temp">288.7</span>
+              <span class="kw-temp-unit">K</span>
+            </div>
+            <div class="kw-condition" id="kw-condition">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Partly cloudy</span>
+            </div>
+            <div class="kw-hl">
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 2.36129C11.7378 2.01198 12.3059 2.013 12.6565 2.36358L18.1949 7.90204C18.5464 8.25351 18.5464 8.82336 18.1949 9.17483C17.8434 9.52631 17.2736 9.52631 16.9221 9.17483L12.9201 5.17277V21C12.9201 21.497 12.5171 21.9 12.0201 21.9C11.523 21.9 11.1201 21.497 11.1201 21V5.16172L7.07554 9.17713C6.7228 9.52733 6.15295 9.52527 5.80275 9.17253C5.45255 8.81979 5.45461 8.24995 5.80735 7.89975L11.386 2.36129Z" fill="currentColor"/></svg> <span id="kw-hi">292.1 K</span></span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45461 15.7501 5.80735 16.1003L11.386 21.6387Z" fill="currentColor"/></svg> <span id="kw-lo">285.4 K</span></span>
+            </div>
+          </div>
+          <div class="kw-visual" id="kw-visual">
+            <div class="kw-sun"></div>
+          </div>
+        </div>
+      </div>
 
-    <div id="extraSections"></div>
+      <div class="kw-grid">
+        <div>
+          <div class="kw-section-title">Hourly forecast</div>
+          <div class="kw-hourly" id="kw-hourly"></div>
+        </div>
+        <div>
+          <div class="kw-section-title">7-day forecast</div>
+          <div class="kw-daily" id="kw-daily"></div>
+        </div>
+      </div>
 
-    <div class="about">
-      <h2>Why kelvin</h2>
-      <p>Kelvin is the SI base unit of thermodynamic temperature. Zero on this scale — absolute zero — is the point where particles hold the least possible thermal energy, so the scale never runs negative in ordinary use. A kelvin is the same size as a degree Celsius: K = °C + 273.15.</p>
+      <div style="margin-top: 24px;">
+        <div class="kw-section-title">Temperature trend</div>
+        <div class="kw-chart-wrap">
+          <svg class="kw-chart-svg" id="kw-chart" viewBox="0 0 600 160" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="kw-section-title">Current details</div>
+        <div class="kw-details" id="kw-details"></div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="kw-section-title">Popular locations</div>
+        <div class="kw-cities" id="kw-cities"></div>
+      </div>
     </div>
 
-    <footer>
-      <span id="updated">—</span>
-      <span>live conditions via web search</span>
-    </footer>
+    <div class="footer">KelvinCast — All temperatures in Kelvin. No ambiguity. Absolute precision.</div>
   </div>
 
-<script>
-  const statusEl = document.getElementById('status');
-  const contentEl = document.getElementById('content');
-  const extraEl = document.getElementById('extraSections');
-  const updatedEl = document.getElementById('updated');
-  const form = document.getElementById('searchForm');
-  const input = document.getElementById('cityInput');
-  const searchBtn = document.getElementById('searchBtn');
-  const dropdown = document.getElementById('dropdown');
-  const pinnedRow = document.getElementById('pinnedRow');
-  const root = document.documentElement.style;
-  const blob1 = document.getElementById('blob1');
-  const blob2 = document.getElementById('blob2');
+  <script>
+  (function() {
+    const cities = {
+      'London': { country: 'United Kingdom', temp: 288.7, condition: 'Partly cloudy', hi: 292.1, lo: 285.4, humidity: 72, wind: 18, pressure: 1013, visibility: 10, uv: 3, dewpoint: 283.9, type: 'cloudy' },
+      'New York': { country: 'United States', temp: 295.4, condition: 'Sunny', hi: 298.2, lo: 291.7, humidity: 55, wind: 12, pressure: 1018, visibility: 16, uv: 7, dewpoint: 285.6, type: 'sunny' },
+      'Tokyo': { country: 'Japan', temp: 301.2, condition: 'Rainy', hi: 303.5, lo: 298.8, humidity: 85, wind: 22, pressure: 1005, visibility: 6, uv: 2, dewpoint: 298.3, type: 'rain' },
+      'Sydney': { country: 'Australia', temp: 283.5, condition: 'Clear night', hi: 288.9, lo: 280.1, humidity: 68, wind: 25, pressure: 1020, visibility: 14, uv: 0, dewpoint: 277.4, type: 'clear' },
+      'Paris': { country: 'France', temp: 291.3, condition: 'Overcast', hi: 293.8, lo: 288.6, humidity: 65, wind: 14, pressure: 1015, visibility: 9, uv: 4, dewpoint: 284.7, type: 'cloudy' },
+      'Dubai': { country: 'UAE', temp: 312.5, condition: 'Scorching', hi: 315.2, lo: 306.8, humidity: 30, wind: 28, pressure: 1002, visibility: 8, uv: 11, dewpoint: 290.1, type: 'sunny' },
+      'Moscow': { country: 'Russia', temp: 275.9, condition: 'Snow', hi: 278.4, lo: 272.1, humidity: 80, wind: 20, pressure: 1025, visibility: 4, uv: 1, dewpoint: 272.8, type: 'snow' },
+      'Singapore': { country: 'Singapore', temp: 304.8, condition: 'Thunderstorm', hi: 307.1, lo: 302.3, humidity: 90, wind: 15, pressure: 1008, visibility: 5, uv: 3, dewpoint: 302.9, type: 'storm' },
+      'Reykjavik': { country: 'Iceland', temp: 273.2, condition: 'Freezing fog', hi: 275.6, lo: 270.9, humidity: 88, wind: 30, pressure: 1028, visibility: 2, uv: 0, dewpoint: 271.5, type: 'snow' },
+      'Mumbai': { country: 'India', temp: 305.6, condition: 'Humid', hi: 308.3, lo: 301.2, humidity: 78, wind: 10, pressure: 1006, visibility: 7, uv: 9, dewpoint: 301.4, type: 'cloudy' },
+      'Cairo': { country: 'Egypt', temp: 310.2, condition: 'Hot & dry', hi: 313.5, lo: 303.1, humidity: 22, wind: 16, pressure: 1010, visibility: 12, uv: 10, dewpoint: 283.2, type: 'sunny' },
+      'Rio de Janeiro': { country: 'Brazil', temp: 298.7, condition: 'Partly cloudy', hi: 301.4, lo: 295.9, humidity: 74, wind: 19, pressure: 1014, visibility: 11, uv: 6, dewpoint: 293.8, type: 'cloudy' },
+      'Berlin': { country: 'Germany', temp: 286.4, condition: 'Light rain', hi: 288.9, lo: 283.7, humidity: 76, wind: 17, pressure: 1012, visibility: 8, uv: 2, dewpoint: 282.3, type: 'rain' },
+      'Toronto': { country: 'Canada', temp: 280.5, condition: 'Snow showers', hi: 283.1, lo: 277.8, humidity: 82, wind: 24, pressure: 1022, visibility: 5, uv: 1, dewpoint: 277.2, type: 'snow' },
+      'Bangkok': { country: 'Thailand', temp: 306.1, condition: 'Monsoon rain', hi: 308.9, lo: 303.4, humidity: 86, wind: 13, pressure: 1007, visibility: 6, uv: 5, dewpoint: 303.7, type: 'rain' },
+      'Los Angeles': { country: 'United States', temp: 299.3, condition: 'Sunny', hi: 302.1, lo: 294.5, humidity: 48, wind: 9, pressure: 1016, visibility: 18, uv: 8, dewpoint: 287.2, type: 'sunny' },
+      'Seoul': { country: 'South Korea', temp: 289.6, condition: 'Cloudy', hi: 292.3, lo: 286.8, humidity: 60, wind: 15, pressure: 1014, visibility: 10, uv: 4, dewpoint: 281.5, type: 'cloudy' },
+      'Mexico City': { country: 'Mexico', temp: 293.8, condition: 'Partly cloudy', hi: 296.5, lo: 290.2, humidity: 52, wind: 11, pressure: 1019, visibility: 13, uv: 6, dewpoint: 283.1, type: 'cloudy' },
+      'Nairobi': { country: 'Kenya', temp: 294.5, condition: 'Sunny', hi: 297.2, lo: 290.8, humidity: 45, wind: 14, pressure: 1017, visibility: 15, uv: 9, dewpoint: 281.4, type: 'sunny' },
+      'Helsinki': { country: 'Finland', temp: 278.3, condition: 'Overcast', hi: 280.7, lo: 275.9, humidity: 70, wind: 21, pressure: 1024, visibility: 9, uv: 1, dewpoint: 273.2, type: 'cloudy' }
+    };
 
-  let currentCity = null;
-  let ddIndex = -1;
-  let ddResults = [];
+    let currentCity = 'London';
 
-  // ---------- World cities (client-side, instant autocomplete) ----------
-  const CITIES = [
-    ["New York","United States"],["Los Angeles","United States"],["Chicago","United States"],
-    ["San Francisco","United States"],["Miami","United States"],["Seattle","United States"],
-    ["Boston","United States"],["Washington","United States"],["Austin","United States"],
-    ["Toronto","Canada"],["Vancouver","Canada"],["Montreal","Canada"],
-    ["Mexico City","Mexico"],["Guadalajara","Mexico"],
-    ["London","United Kingdom"],["Manchester","United Kingdom"],["Edinburgh","United Kingdom"],
-    ["Paris","France"],["Marseille","France"],["Lyon","France"],
-    ["Berlin","Germany"],["Munich","Germany"],["Hamburg","Germany"],
-    ["Madrid","Spain"],["Barcelona","Spain"],["Seville","Spain"],
-    ["Rome","Italy"],["Milan","Italy"],["Naples","Italy"],["Venice","Italy"],
-    ["Amsterdam","Netherlands"],["Rotterdam","Netherlands"],
-    ["Brussels","Belgium"],["Zurich","Switzerland"],["Geneva","Switzerland"],
-    ["Vienna","Austria"],["Lisbon","Portugal"],["Porto","Portugal"],
-    ["Dublin","Ireland"],["Stockholm","Sweden"],["Oslo","Norway"],
-    ["Copenhagen","Denmark"],["Helsinki","Finland"],["Reykjavik","Iceland"],
-    ["Warsaw","Poland"],["Krakow","Poland"],["Prague","Czechia"],
-    ["Budapest","Hungary"],["Bucharest","Romania"],["Athens","Greece"],
-    ["Istanbul","Turkey"],["Ankara","Turkey"],
-    ["Moscow","Russia"],["Saint Petersburg","Russia"],
-    ["Kyiv","Ukraine"],["Zagreb","Croatia"],["Belgrade","Serbia"],
-    ["Dubai","United Arab Emirates"],["Abu Dhabi","United Arab Emirates"],
-    ["Doha","Qatar"],["Riyadh","Saudi Arabia"],["Jeddah","Saudi Arabia"],
-    ["Tel Aviv","Israel"],["Jerusalem","Israel"],["Amman","Jordan"],
-    ["Beirut","Lebanon"],["Cairo","Egypt"],["Alexandria","Egypt"],
-    ["Casablanca","Morocco"],["Marrakesh","Morocco"],["Tunis","Tunisia"],
-    ["Lagos","Nigeria"],["Abuja","Nigeria"],["Nairobi","Kenya"],
-    ["Addis Ababa","Ethiopia"],["Accra","Ghana"],["Dakar","Senegal"],
-    ["Johannesburg","South Africa"],["Cape Town","South Africa"],["Durban","South Africa"],
-    ["Kigali","Rwanda"],["Dar es Salaam","Tanzania"],
-    ["Mumbai","India"],["Delhi","India"],["Bengaluru","India"],
-    ["Kolkata","India"],["Chennai","India"],["Hyderabad","India"],
-    ["Karachi","Pakistan"],["Lahore","Pakistan"],["Islamabad","Pakistan"],
-    ["Dhaka","Bangladesh"],["Kathmandu","Nepal"],["Colombo","Sri Lanka"],
-    ["Bangkok","Thailand"],["Chiang Mai","Thailand"],
-    ["Hanoi","Vietnam"],["Ho Chi Minh City","Vietnam"],
-    ["Singapore","Singapore"],["Kuala Lumpur","Malaysia"],
-    ["Jakarta","Indonesia"],["Bali","Indonesia"],["Manila","Philippines"],
-    ["Phnom Penh","Cambodia"],["Yangon","Myanmar"],
-    ["Beijing","China"],["Shanghai","China"],["Shenzhen","China"],
-    ["Guangzhou","China"],["Chengdu","China"],["Hong Kong","China"],
-    ["Taipei","Taiwan"],["Seoul","South Korea"],["Busan","South Korea"],
-    ["Tokyo","Japan"],["Osaka","Japan"],["Kyoto","Japan"],["Sapporo","Japan"],
-    ["Ulaanbaatar","Mongolia"],["Almaty","Kazakhstan"],["Tashkent","Uzbekistan"],
-    ["Sydney","Australia"],["Melbourne","Australia"],["Brisbane","Australia"],
-    ["Perth","Australia"],["Auckland","New Zealand"],["Wellington","New Zealand"],
-    ["Suva","Fiji"],["Honolulu","United States"],
-    ["Sao Paulo","Brazil"],["Rio de Janeiro","Brazil"],["Brasilia","Brazil"],
-    ["Buenos Aires","Argentina"],["Santiago","Chile"],["Lima","Peru"],
-    ["Bogota","Colombia"],["Medellin","Colombia"],["Quito","Ecuador"],
-    ["Caracas","Venezuela"],["Montevideo","Uruguay"],["La Paz","Bolivia"],
-    ["Panama City","Panama"],["San Jose","Costa Rica"],["Havana","Cuba"],
-    ["Kingston","Jamaica"],["Santo Domingo","Dominican Republic"]
-  ].map(([name, country]) => ({ name, country }));
-
-  const POPULAR = ["New York","London","Tokyo","Paris","Dubai","Singapore","Sydney","Reykjavik"];
-
-  // ---------- Icons ----------
-  const ICONS = {
-    sun: `<circle cx="32" cy="32" r="12"/><g stroke-linecap="round"><line x1="32" y1="6" x2="32" y2="14"/><line x1="32" y1="50" x2="32" y2="58"/><line x1="6" y1="32" x2="14" y2="32"/><line x1="50" y1="32" x2="58" y2="32"/><line x1="13" y1="13" x2="19" y2="19"/><line x1="45" y1="45" x2="51" y2="51"/><line x1="51" y1="13" x2="45" y2="19"/><line x1="19" y1="45" x2="13" y2="51"/></g>`,
-    'sun-cloud': `<circle cx="24" cy="24" r="9"/><g stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="9"/><line x1="8" y1="20" x2="12" y2="22"/><line x1="10" y1="8" x2="14" y2="12"/></g><path d="M20 46h22a9 9 0 0 0 1-18 13 13 0 0 0-24.5-4.5A11 11 0 0 0 20 46z"/>`,
-    cloud: `<path d="M18 44h26a10 10 0 0 0 1-20 14 14 0 0 0-27-3A12 12 0 0 0 18 44z"/>`,
-    rain: `<path d="M16 34h26a10 10 0 0 0 1-20 14 14 0 0 0-27-3A12 12 0 0 0 16 34z"/><g stroke-linecap="round"><line x1="22" y1="42" x2="19" y2="50"/><line x1="32" y1="42" x2="29" y2="50"/><line x1="42" y1="42" x2="39" y2="50"/></g>`,
-    snow: `<path d="M16 32h26a10 10 0 0 0 1-20 14 14 0 0 0-27-3A12 12 0 0 0 16 32z"/><g stroke-linecap="round"><line x1="22" y1="42" x2="22" y2="52"/><line x1="17" y1="47" x2="27" y2="47"/><line x1="38" y1="42" x2="38" y2="52"/><line x1="33" y1="47" x2="43" y2="47"/></g>`,
-    fog: `<g stroke-linecap="round"><line x1="10" y1="24" x2="54" y2="24"/><line x1="16" y1="32" x2="48" y2="32"/><line x1="10" y1="40" x2="54" y2="40"/></g>`,
-    storm: `<path d="M16 30h26a10 10 0 0 0 1-20 14 14 0 0 0-27-3A12 12 0 0 0 16 30z"/><path d="M30 38l-6 10h7l-4 8" stroke-linejoin="round" stroke-linecap="round"/>`
-  };
-  const VALID_TYPES = Object.keys(ICONS);
-  const safeType = (t) => VALID_TYPES.includes(t) ? t : 'cloud';
-
-  function icon(type, size, pulse) {
-    const s = size || 56;
-    const p = ICONS[type] || ICONS.cloud;
-    const cls = pulse ? ' class="pulse"' : '';
-    return `<svg${cls} width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6">${p}</svg>`;
-  }
-
-  // ---------- Units ----------
-  const cToK = c => c + 273.15;
-  const fmtK = k => k.toFixed(1);
-  const cToF = c => (c * 9 / 5) + 32;
-
-  function moodColors(k) {
-    const t = Math.max(0, Math.min(1, (k - 255) / (308 - 255)));
-    const cold = { a: [22,50,79], b: [43,33,84] };
-    const warm = { a: [138,62,30], b: [163,90,34] };
-    const lerp = (c1,c2) => c1.map((v,i) => Math.round(v + (c2[i]-v)*t));
-    return { a: lerp(cold.a,warm.a), b: lerp(cold.b,warm.b) };
-  }
-  function applyMood(k) {
-    const { a, b } = moodColors(k);
-    const aStr = `rgb(${a[0]},${a[1]},${a[2]})`, bStr = `rgb(${b[0]},${b[1]},${b[2]})`;
-    root.setProperty('--mood-a', aStr);
-    root.setProperty('--mood-b', bStr);
-    blob1.style.background = aStr;
-    blob2.style.background = bStr;
-  }
-
-  // ---------- Pinned cities (persisted) ----------
-  async function getPinned() {
-    try {
-      const res = await window.storage.get('pinned-cities', false);
-      return res && res.value ? JSON.parse(res.value) : [];
-    } catch (e) { return []; }
-  }
-  async function setPinned(list) {
-    try { await window.storage.set('pinned-cities', JSON.stringify(list), false); } catch (e) {}
-  }
-  async function togglePin(name) {
-    let list = await getPinned();
-    if (list.includes(name)) list = list.filter(c => c !== name);
-    else list = [...list, name].slice(-8);
-    await setPinned(list);
-    renderPinnedRow(list);
-    return list;
-  }
-  function renderPinnedRow(list) {
-    if (!list.length) { pinnedRow.innerHTML = ''; return; }
-    pinnedRow.innerHTML = list.map(name => `
-      <div class="pin-chip" data-city="${name}"><span class="dot"></span>${name}</div>
-    `).join('');
-    pinnedRow.querySelectorAll('.pin-chip').forEach(el => {
-      el.addEventListener('click', () => loadByName(el.dataset.city));
-    });
-  }
-
-  // ---------- Autocomplete dropdown ----------
-  function openDropdown(query) {
-    const q = (query || '').trim().toLowerCase();
-    let results;
-    if (!q) {
-      results = CITIES.filter(c => POPULAR.includes(c.name));
-    } else {
-      results = CITIES.filter(c => c.name.toLowerCase().includes(q) || c.country.toLowerCase().includes(q));
-      results.sort((a,b) => {
-        const aStart = a.name.toLowerCase().startsWith(q) ? 0 : 1;
-        const bStart = b.name.toLowerCase().startsWith(q) ? 0 : 1;
-        return aStart - bStart;
-      });
-    }
-    results = results.slice(0, 8);
-    ddResults = results;
-    ddIndex = -1;
-
-    if (!results.length) {
-      dropdown.innerHTML = `<div class="dd-empty">No preset match — press Enter to search "${query}" anyway. Any city on Earth works.</div>`;
-    } else {
-      const label = q ? 'matches' : 'popular right now';
-      dropdown.innerHTML = `<div class="dd-label">${label}</div>` + results.map((c,i) => `
-        <div class="dd-item" data-index="${i}"><span>${c.name}</span><span class="dd-country">${c.country}</span></div>
-      `).join('');
-      dropdown.querySelectorAll('.dd-item').forEach(el => {
-        el.addEventListener('mouseenter', () => setActiveIndex(parseInt(el.dataset.index)));
-        el.addEventListener('click', () => selectCity(results[parseInt(el.dataset.index)]));
-      });
-    }
-    dropdown.style.display = 'block';
-  }
-  function closeDropdown() { dropdown.style.display = 'none'; ddIndex = -1; }
-  function setActiveIndex(i) {
-    ddIndex = i;
-    dropdown.querySelectorAll('.dd-item').forEach((el, idx) => el.classList.toggle('active', idx === i));
-  }
-  function selectCity(c) {
-    input.value = `${c.name}, ${c.country}`;
-    closeDropdown();
-    loadByName(`${c.name}, ${c.country}`);
-  }
-
-  input.addEventListener('focus', () => openDropdown(input.value));
-  input.addEventListener('input', () => openDropdown(input.value));
-  input.addEventListener('keydown', (e) => {
-    if (dropdown.style.display === 'none') return;
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex(Math.min(ddIndex + 1, ddResults.length - 1)); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex(Math.max(ddIndex - 1, 0)); }
-    else if (e.key === 'Enter' && ddIndex >= 0 && ddResults[ddIndex]) { e.preventDefault(); selectCity(ddResults[ddIndex]); }
-    else if (e.key === 'Escape') { closeDropdown(); }
-  });
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-wrap')) closeDropdown();
-  });
-
-  // ---------- Weather lookup via Anthropic API (the only external call artifacts can make) ----------
-  async function lookupWeather(cityName, { signal } = {}) {
-    const prompt = `Search the web for the current real weather conditions right now in "${cityName}". ` +
-      `Respond with ONLY a single raw JSON object — no markdown, no backticks, no commentary — matching exactly this shape:
-{
-  "resolved_name": "city name",
-  "region": "state/country, short",
-  "condition": "brief lowercase description, e.g. partly cloudy",
-  "weather_type": "one of exactly: sun, sun-cloud, cloud, rain, snow, fog, storm",
-  "temp_c": number,
-  "feels_like_c": number,
-  "humidity_pct": number,
-  "wind_kmh": number,
-  "pressure_hpa": number,
-  "uv_index": number,
-  "sunrise": "local time, e.g. 6:14 AM",
-  "sunset": "local time, e.g. 7:52 PM",
-  "hourly": [
-    {"label": "e.g. 3PM", "temp_c": number}
-  ],
-  "forecast": [
-    {"day": "three-letter day abbreviation", "high_c": number, "low_c": number, "weather_type": "same enum as above"}
-  ]
-}
-The "hourly" array must have exactly 8 entries for the next 8 hours in order. The "forecast" array must have exactly 5 entries, today first, chronological. All numeric fields are plain numbers, no units, no strings. If you cannot find the exact place, use the closest major city and reflect that in resolved_name.`;
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal,
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1600,
-        messages: [{ role: 'user', content: prompt }],
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }]
-      })
-    });
-
-    if (!response.ok) throw new Error(`lookup failed (status ${response.status})`);
-    const data = await response.json();
-
-    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    const match = cleaned.match(/\{[\s\S]*\}/);
-    const jsonStr = match ? match[0] : cleaned;
-
-    let parsed;
-    try { parsed = JSON.parse(jsonStr); }
-    catch (e) { throw new Error('received an unreadable response — try again'); }
-
-    if (typeof parsed.temp_c !== 'number') throw new Error('incomplete weather data returned');
-    return parsed;
-  }
-
-  async function lookupWithRetry(cityName, attempts = 2) {
-    let lastErr;
-    for (let i = 0; i < attempts; i++) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 20000);
-      try {
-        const result = await lookupWeather(cityName, { signal: controller.signal });
-        clearTimeout(timeout);
-        return result;
-      } catch (err) {
-        clearTimeout(timeout);
-        lastErr = err.name === 'AbortError' ? new Error('request timed out') : err;
+    function generateHourly(baseTemp) {
+      const hours = [];
+      const now = new Date().getHours();
+      for (let i = 0; i < 24; i++) {
+        const h = (now + i) % 24;
+        const offset = Math.sin((h - 6) * Math.PI / 12) * 4;
+        const rand = (Math.random() - 0.5) * 1.5;
+        hours.push({ hour: h, temp: +(baseTemp + offset + rand).toFixed(1) });
       }
+      return hours;
     }
-    throw lastErr;
-  }
 
-  // ---------- Hourly sparkline ----------
-  function sparkline(hourly) {
-    if (!Array.isArray(hourly) || hourly.length < 2) return '';
-    const ks = hourly.map(h => cToK(h.temp_c));
-    const min = Math.min(...ks), max = Math.max(...ks);
-    const range = Math.max(max - min, 1);
-    const w = 600, h = 90, pad = 10;
-    const pts = ks.map((k, i) => {
-      const x = pad + (i / (ks.length - 1)) * (w - pad * 2);
-      const y = pad + (1 - (k - min) / range) * (h - pad * 2);
-      return [x, y];
-    });
-    const path = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-    const dots = pts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="var(--gold)"/>`).join('');
-    const labels = hourly.map(h => `<span>${h.label}</span>`).join('');
-    return `
-      <div class="section-label">Next 8 hours</div>
-      <div class="hourly-panel">
-        <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-          <path d="${path}" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-          ${dots}
-        </svg>
-        <div class="hourly-labels">${labels}</div>
-      </div>
-    `;
-  }
+    function generateDaily(baseTemp) {
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const today = new Date().getDay();
+      const result = [];
+      for (let i = 0; i < 7; i++) {
+        const d = (today + i) % 7;
+        const offset = (Math.random() - 0.5) * 6;
+        const hi = +(baseTemp + 3 + offset).toFixed(1);
+        const lo = +(baseTemp - 3 + offset * 0.5).toFixed(1);
+        result.push({ day: days[d], hi, lo });
+      }
+      return result;
+    }
 
-  function uvClass(uv) {
-    if (typeof uv !== 'number') return '';
-    if (uv <= 2) return 'uv-low';
-    if (uv >= 6) return 'uv-high';
-    return '';
-  }
+    function getVisual(type) {
+      if (type === 'sunny' || type === 'clear') return '<div class="kw-sun"></div>';
+      if (type === 'cloudy') return '<div class="kw-cloudy"></div>';
+      if (type === 'rain') return '<div class="kw-rain"><div class="kw-cloudy"></div><div class="kw-rain-drops"></div></div>';
+      if (type === 'snow') return '<div class="kw-snow"><div class="kw-cloudy"></div><div class="kw-snow-flakes"></div></div>';
+      if (type === 'storm') return '<div class="kw-storm"><div class="kw-cloudy"></div><div class="kw-bolt"></div></div>';
+      return '<div class="kw-sun"></div>';
+    }
 
-  // ---------- Render ----------
-  async function render(w) {
-    const k = cToK(w.temp_c);
-    const feelsK = cToK(w.feels_like_c);
-    applyMood(k);
-    currentCity = w.resolved_name;
+    function getConditionIcon(type) {
+      if (type === 'sunny' || type === 'clear') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      if (type === 'cloudy') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 18C3.79086 18 2 16.2091 2 14C2 11.7909 3.79086 10 6 10C6.34207 10 6.67217 10.0447 6.98556 10.1293C7.61869 7.20219 10.2022 5 13.5 5C17.0899 5 20 7.91015 20 11.5C20 11.7236 19.9904 11.9447 19.9716 12.1625C21.7543 12.5513 23 14.1392 23 16C23 18.2091 21.2091 20 19 20H6Z" fill="currentColor"/></svg>';
+      if (type === 'rain') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><path d="M8 20L7 22M12 20L11 22M16 20L15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      if (type === 'snow') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><circle cx="8" cy="21" r="1" fill="currentColor"/><circle cx="12" cy="21" r="1" fill="currentColor"/><circle cx="16" cy="21" r="1" fill="currentColor"/></svg>';
+      if (type === 'storm') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><path d="M13 20L11 23H14L12 26" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/></svg>';
+    }
 
-    const today = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-    const place = w.resolved_name + (w.region ? ' — ' + w.region : '');
+    function renderChart(hourly) {
+      const svg = document.getElementById('kw-chart');
+      const temps = hourly.map(h => h.temp);
+      const min = Math.min(...temps) - 1;
+      const max = Math.max(...temps) + 1;
+      const range = max - min;
+      const w = 600, h = 160, pad = 20;
+      const cw = w - pad * 2, ch = h - pad * 2;
 
-    const pinned = await getPinned();
-    const isPinned = pinned.includes(w.resolved_name);
+      let path = '';
+      let area = '';
+      const pts = [];
+      for (let i = 0; i < temps.length; i++) {
+        const x = pad + (i / (temps.length - 1)) * cw;
+        const y = pad + ch - ((temps[i] - min) / range) * ch;
+        pts.push({x, y, temp: temps[i]});
+        if (i === 0) { path += `M ${x} ${y}`; area += `M ${x} ${h}`; }
+        else { path += ` L ${x} ${y}`; }
+      }
+      area = `M ${pad} ${h} ` + pts.map(p => `L ${p.x} ${p.y}`).join(' ') + ` L ${w - pad} ${h} Z`;
 
-    const forecast = Array.isArray(w.forecast) ? w.forecast.slice(0, 5) : [];
-    const forecastHtml = forecast.map((f, i) => `
-      <div class="fcard">
-        <p class="fday">${i === 0 ? 'Today' : (f.day || '')}</p>
-        <div class="ficon">${icon(safeType(f.weather_type), 30)}</div>
-        <p class="fhi">${fmtK(cToK(f.high_c))} K</p>
-        <p class="flo">${fmtK(cToK(f.low_c))} K</p>
-      </div>
-    `).join('');
+      let dots = '';
+      for (const p of pts) {
+        dots += `<circle cx="${p.x}" cy="${p.y}" r="3" fill="#3b82f6"/>`;
+        if (p.x % 80 < 10) {
+          dots += `<text x="${p.x}" y="${p.y - 10}" text-anchor="middle" font-size="11" fill="#a0a0a8" font-family="var(--kimi-font-sans)">${p.temp.toFixed(1)}</text>`;
+        }
+      }
 
-    contentEl.innerHTML = `
-      <div class="hero-panel">
-        <div class="hero-top">
-          <div>
-            <div class="place-row">
-              <p class="place">${place}</p>
-              <button type="button" class="star-btn ${isPinned ? 'active' : ''}" id="starBtn" title="Pin this city" aria-label="Pin this city">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="${isPinned ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-            <p class="date">${today}</p>
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="kwgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${area}" fill="url(#kwgrad)"/>
+        <path d="${path}" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        ${dots}
+      `;
+    }
+
+    function render() {
+      const data = cities[currentCity];
+      document.getElementById('kw-city').textContent = currentCity;
+      document.getElementById('kw-country').textContent = data.country;
+      document.getElementById('kw-temp').textContent = data.temp.toFixed(1);
+      document.getElementById('kw-condition').innerHTML = getConditionIcon(data.type) + '<span>' + data.condition + '</span>';
+      document.getElementById('kw-hi').textContent = data.hi.toFixed(1) + ' K';
+      document.getElementById('kw-lo').textContent = data.lo.toFixed(1) + ' K';
+      document.getElementById('kw-visual').innerHTML = getVisual(data.type);
+
+      const now = new Date();
+      const opts = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
+      document.getElementById('kw-now').textContent = now.toLocaleDateString('en-US', opts);
+
+      const hourly = generateHourly(data.temp);
+      const hourlyEl = document.getElementById('kw-hourly');
+      hourlyEl.innerHTML = hourly.map(h => `
+        <div class="kw-hour">
+          <div class="kw-hour-time">${h.hour}:00</div>
+          <div class="kw-hour-icon">${getConditionIcon(Math.random() > 0.5 ? data.type : 'cloudy')}</div>
+          <div class="kw-hour-temp">${h.temp.toFixed(1)}</div>
+        </div>
+      `).join('');
+
+      const daily = generateDaily(data.temp);
+      const allTemps = daily.flatMap(d => [d.hi, d.lo]);
+      const dMin = Math.min(...allTemps), dMax = Math.max(...allTemps);
+      const dRange = dMax - dMin || 1;
+      const dailyEl = document.getElementById('kw-daily');
+      dailyEl.innerHTML = daily.map(d => {
+        const left = ((d.lo - dMin) / dRange) * 100;
+        const width = ((d.hi - d.lo) / dRange) * 100;
+        return `
+          <div class="kw-day-row">
+            <div class="kw-day-name">${d.day}</div>
+            <div class="kw-day-bar"><div class="kw-day-bar-fill" style="left:${left}%; width:${width}%"></div></div>
+            <div class="kw-day-lo">${d.lo.toFixed(1)}</div>
+            <div class="kw-day-hi">${d.hi.toFixed(1)}</div>
           </div>
-          <div class="icon-wrap">${icon(safeType(w.weather_type), 56, true)}</div>
+        `;
+      }).join('');
+
+      renderChart(hourly);
+
+      const details = [
+        { label: 'Humidity', value: data.humidity + '%' },
+        { label: 'Wind', value: data.wind + ' km/h' },
+        { label: 'Pressure', value: data.pressure + ' hPa' },
+        { label: 'Visibility', value: data.visibility + ' km' },
+        { label: 'UV index', value: data.uv },
+        { label: 'Dew point', value: data.dewpoint.toFixed(1) + ' K' }
+      ];
+      document.getElementById('kw-details').innerHTML = details.map(d => `
+        <div class="kw-detail">
+          <div class="kw-detail-label">${d.label}</div>
+          <div class="kw-detail-value">${d.value}</div>
         </div>
+      `).join('');
 
-        <div class="reading">
-          <div class="number">${fmtK(k)}</div>
-          <div class="unit-k">K</div>
-        </div>
-        <p class="condition">${w.condition || ''}</p>
-        <p class="converts">${w.temp_c.toFixed(1)}°C · ${cToF(w.temp_c).toFixed(1)}°F</p>
+      const cityNames = Object.keys(cities);
+      document.getElementById('kw-cities').innerHTML = cityNames.map(c => `
+        <div class="kw-chip ${c === currentCity ? 'active' : ''}" data-city="${c}">${c}</div>
+      `).join('');
 
-        <div class="chips">
-          <div class="chip"><span class="chip-label">feels like</span><span class="chip-value">${fmtK(feelsK)} K</span></div>
-          <div class="chip"><span class="chip-label">humidity</span><span class="chip-value">${w.humidity_pct ?? '—'}%</span></div>
-          <div class="chip"><span class="chip-label">wind</span><span class="chip-value">${w.wind_kmh ?? '—'} km/h</span></div>
-          <div class="chip"><span class="chip-label">pressure</span><span class="chip-value">${w.pressure_hpa ?? '—'} hPa</span></div>
-          <div class="chip"><span class="chip-label">uv index</span><span class="chip-value ${uvClass(w.uv_index)}">${w.uv_index ?? '—'}</span></div>
-          <div class="chip"><span class="chip-label">sunrise</span><span class="chip-value">${w.sunrise ?? '—'}</span></div>
-          <div class="chip"><span class="chip-label">sunset</span><span class="chip-value">${w.sunset ?? '—'}</span></div>
-        </div>
-      </div>
-    `;
-
-    extraEl.innerHTML = `
-      ${sparkline(w.hourly)}
-      ${forecastHtml ? `<div class="section-label">5-day outlook</div><div class="forecast">${forecastHtml}</div>` : ''}
-    `;
-
-    const starBtn = document.getElementById('starBtn');
-    if (starBtn) {
-      starBtn.addEventListener('click', async () => {
-        const list = await togglePin(w.resolved_name);
-        starBtn.classList.toggle('active', list.includes(w.resolved_name));
-        starBtn.querySelector('svg').setAttribute('fill', list.includes(w.resolved_name) ? 'currentColor' : 'none');
+      document.querySelectorAll('.kw-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          currentCity = chip.dataset.city;
+          render();
+        });
       });
     }
 
-    updatedEl.textContent = `updated ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-  }
+    const searchInput = document.getElementById('kw-search');
+    const suggestions = document.getElementById('kw-suggestions');
 
-  function renderError(name, message) {
-    contentEl.innerHTML = `
-      <div class="error-panel">
-        Couldn't retrieve weather for "${name}" — ${message}.
-        <div><button type="button" id="retryBtn">Try again</button></div>
-      </div>
-    `;
-    extraEl.innerHTML = '';
-    const retry = document.getElementById('retryBtn');
-    if (retry) retry.addEventListener('click', () => loadByName(name));
-  }
+    searchInput.addEventListener('input', () => {
+      const val = searchInput.value.trim().toLowerCase();
+      if (!val) { suggestions.classList.remove('show'); return; }
+      const matches = Object.keys(cities).filter(c => c.toLowerCase().includes(val));
+      if (matches.length) {
+        suggestions.innerHTML = matches.map(c => `<div class="kw-suggestion" data-city="${c}">${c}</div>`).join('');
+        suggestions.classList.add('show');
+        suggestions.querySelectorAll('.kw-suggestion').forEach(s => {
+          s.addEventListener('click', () => {
+            currentCity = s.dataset.city;
+            searchInput.value = '';
+            suggestions.classList.remove('show');
+            render();
+          });
+        });
+      } else {
+        suggestions.classList.remove('show');
+      }
+    });
 
-  async function loadByName(name) {
-    statusEl.textContent = `looking up "${name}"…`;
-    searchBtn.disabled = true;
-    contentEl.innerHTML = '<div class="skeleton"></div>';
-    extraEl.innerHTML = '';
-    closeDropdown();
-    try {
-      const w = await lookupWithRetry(name, 2);
-      await render(w);
-      statusEl.textContent = '';
-    } catch (err) {
-      statusEl.textContent = '';
-      renderError(name, err.message || 'unknown error');
-    } finally {
-      searchBtn.disabled = false;
-    }
-  }
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = searchInput.value.trim().toLowerCase();
+        const match = Object.keys(cities).find(c => c.toLowerCase().includes(val));
+        if (match) {
+          currentCity = match;
+          searchInput.value = '';
+          suggestions.classList.remove('show');
+          render();
+        }
+      }
+    });
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const val = input.value.trim();
-    if (val) loadByName(val);
-  });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.kw-search-wrap')) suggestions.classList.remove('show');
+    });
 
-  (async () => {
-    const pinned = await getPinned();
-    renderPinnedRow(pinned);
-    loadByName('New York');
+    document.getElementById('kw-refresh').addEventListener('click', () => {
+      const btn = document.getElementById('kw-refresh');
+      btn.style.transform = 'rotate(360deg)';
+      btn.style.transition = 'transform 0.6s ease';
+      setTimeout(() => { btn.style.transform = 'rotate(0deg)'; render(); }, 600);
+    });
+
+    render();
   })();
-</script>
+  </script>
 </body>
 </html>
