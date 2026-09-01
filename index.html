@@ -2,479 +2,1321 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KelvinCast — Professional Weather in Kelvin</title>
-  <meta name="description" content="The world's most precise weather dashboard. All temperatures in Kelvin. Zero ambiguity. Absolute scale.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌡️%3C/text%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>KelvinCast Pro — Absolute Weather Intelligence</title>
+  <meta name="description" content="The world's most precise weather dashboard. All temperatures in Kelvin. Real-time data. Zero ambiguity. Absolute scale.">
+  <meta name="theme-color" content="#0b0b10">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:title" content="KelvinCast Pro — Weather in Kelvin">
+  <meta property="og:description" content="Real-time weather with absolute precision. No ambiguity. All temps in Kelvin.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://via.placeholder.com/1200x630/0b0b10/3b82f6?text=KelvinCast+Pro">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%233b82f6'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='50' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%2312121a'/%3E%3Ccircle cx='90' cy='90' r='50' fill='%233b82f6'/%3E%3Ctext x='90' y='115' text-anchor='middle' font-size='70' fill='white' font-family='sans-serif'%3EK%3C/text%3E%3C/svg%3E">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: #0a0a0f;
-      color: #e8e8ec;
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px 16px;
-    }
-    @media (min-width: 768px) { .container { padding: 40px 24px; } }
-
-    /* Design system tokens fallback */
     :root {
-      --kimi-color-text-primary: #e8e8ec;
-      --kimi-color-text-secondary: #a0a0a8;
-      --kimi-color-text-tertiary: #6e6e78;
-      --kimi-color-text-quaternary: #4a4a52;
-      --kimi-color-surface: #12121a;
-      --kimi-color-surface-muted: #1a1a24;
-      --kimi-color-surface-raised: #1e1e2a;
-      --kimi-color-surface-strong: #2a2a38;
-      --kimi-color-border: #2a2a38;
-      --kimi-color-danger: #ef4444;
-      --kimi-color-positive: #22c55e;
-      --kimi-color-warning: #f59e0b;
-      --kimi-color-accent: #3b82f6;
-      --kimi-chart-1: #3b82f6;
-      --kimi-chart-2: #ef4444;
-      --kimi-chart-3: #22c55e;
-      --kimi-chart-4: #a855f7;
-      --kimi-chart-5: #6e6e78;
-      --kimi-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --kimi-font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
-      --t-micro: 60ms;
-      --t-fast: 120ms;
-      --t-normal: 200ms;
-      --t-slow: 300ms;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
-      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --bg: #0b0b10; --bg-elevated: #12121a; --bg-raised: #1a1a24; --bg-strong: #232330; --bg-glass: rgba(18,18,26,0.85);
+      --text-primary: #f0f0f5; --text-secondary: #a8a8b3; --text-tertiary: #6e6e7a; --text-muted: #4a4a55;
+      --border: rgba(255,255,255,0.06); --border-hover: rgba(255,255,255,0.12);
+      --accent: #3b82f6; --accent-glow: rgba(59,130,246,0.25); --warning: #f59e0b;
+      --danger: #ef4444; --success: #22c55e; --purple: #a855f7; --teal: #14b8a6;
+      --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3); --shadow-md: 0 4px 12px rgba(0,0,0,0.4); --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+      --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
     }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); line-height: 1.5; min-height: 100vh; overflow-x: hidden; }
+    .app { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+    @media (min-width: 768px) { .app { padding: 32px 24px 80px; } }
 
-    /* Widget styles */
-    .kw-root { font-family: var(--kimi-font-sans); color: var(--kimi-color-text-primary); }
-    .kw-root * { box-sizing: border-box; }
-    .kw-root button, .kw-root input { font: inherit; }
-    .kw-root svg { display: block; }
+    .bg-layer { position: fixed; inset: 0; z-index: -1; pointer-events: none; transition: opacity 1.5s ease; }
+    .bg-layer.clear { background: radial-gradient(ellipse at 20% 20%, rgba(245,158,11,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.05) 0%, transparent 50%); }
+    .bg-layer.cloudy { background: radial-gradient(ellipse at 50% 50%, rgba(100,100,120,0.1) 0%, transparent 60%); }
+    .bg-layer.rain { background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 50%); }
+    .bg-layer.snow { background: radial-gradient(ellipse at 50% 50%, rgba(200,210,230,0.06) 0%, transparent 60%); }
+    .bg-layer.storm { background: radial-gradient(ellipse at 50% 20%, rgba(168,85,247,0.1) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(239,68,68,0.05) 0%, transparent 50%); }
+    .bg-layer.night { background: radial-gradient(ellipse at 50% 20%, rgba(59,130,246,0.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(168,85,247,0.04) 0%, transparent 50%); }
+    .bg-layer.fog { background: radial-gradient(ellipse at 50% 50%, rgba(150,150,170,0.08) 0%, transparent 60%); }
 
-    .kw-hero { display: flex; flex-direction: column; gap: 24px; padding: 24px; border-radius: 12px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); }
-    .kw-searchbar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface-muted); }
-    .kw-searchbar input { flex: 1; border: none; outline: none; background: transparent; color: var(--kimi-color-text-primary); font-size: 16px; }
-    .kw-searchbar input::placeholder { color: var(--kimi-color-text-quaternary); }
-    .kw-searchbar button { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--kimi-color-surface-raised); cursor: pointer; color: var(--kimi-color-text-secondary); transition: background var(--t-fast) var(--ease-out); }
-    .kw-searchbar button:hover { background: var(--kimi-color-surface-strong); }
+    .particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+    .particle { position: absolute; opacity: 0; animation: particle-fall linear infinite; }
+    @keyframes particle-fall { 0% { transform: translateY(-10px) translateX(0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(100vh) translateX(20px); opacity: 0; } }
 
-    .kw-main { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 720px) { .kw-main { grid-template-columns: 1fr; } }
+    /* Install banner */
+    .install-banner { display: none; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; align-items: center; justify-content: space-between; gap: 12px; }
+    .install-banner.show { display: flex; }
+    .install-banner-text { font-size: 14px; color: var(--text-secondary); }
+    .install-banner-text strong { color: var(--text-primary); }
+    .install-btn { padding: 7px 16px; border-radius: var(--radius-sm); border: none; background: var(--accent); color: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity var(--transition); }
+    .install-btn:hover { opacity: 0.85; }
+    .install-close { width: 28px; height: 28px; border-radius: 50%; border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .install-close:hover { color: var(--text-secondary); }
 
-    .kw-current { display: flex; flex-direction: column; gap: 16px; }
-    .kw-city { font-size: 28px; font-weight: 500; line-height: 1.1; }
-    .kw-sub { font-size: 14px; color: var(--kimi-color-text-secondary); }
-    .kw-temp-big { font-size: 72px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
-    .kw-temp-unit { font-size: 24px; color: var(--kimi-color-text-secondary); font-weight: 400; }
-    .kw-condition { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--kimi-color-text-secondary); }
-    .kw-hl { display: flex; gap: 16px; font-size: 14px; color: var(--kimi-color-text-tertiary); }
-    .kw-hl span { display: flex; align-items: center; gap: 4px; }
+    /* Alerts */
+    .alert-banner { display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px; align-items: flex-start; gap: 12px; animation: alert-pulse 3s ease-in-out infinite; }
+    .alert-banner.show { display: flex; }
+    @keyframes alert-pulse { 0%,100% { border-color: rgba(239,68,68,0.25); } 50% { border-color: rgba(239,68,68,0.5); } }
+    .alert-icon { width: 20px; height: 20px; color: var(--danger); flex-shrink: 0; margin-top: 2px; }
+    .alert-content { flex: 1; }
+    .alert-title { font-size: 14px; font-weight: 600; color: var(--danger); margin-bottom: 2px; }
+    .alert-text { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+    .alert-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-    .kw-visual { display: flex; align-items: center; justify-content: center; min-height: 200px; }
-    .kw-sun { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0%, #f59e0b 40%, #3b82f6 100%); box-shadow: 0 0 60px rgba(245, 158, 11, 0.3); animation: kw-pulse 4s ease-in-out infinite; }
-    .kw-cloudy { width: 140px; height: 80px; background: var(--kimi-color-surface-strong); border-radius: 60px; position: relative; }
-    .kw-cloudy::before { content: ''; position: absolute; width: 70px; height: 70px; background: var(--kimi-color-surface-raised); border-radius: 50%; top: -35px; left: 20px; }
-    .kw-cloudy::after { content: ''; position: absolute; width: 50px; height: 50px; background: var(--kimi-color-surface-muted); border-radius: 50%; top: -25px; left: 60px; }
-    .kw-rain { position: relative; }
-    .kw-rain .kw-cloudy { background: var(--kimi-color-text-quaternary); }
-    .kw-rain .kw-cloudy::before { background: var(--kimi-color-text-tertiary); }
-    .kw-rain .kw-cloudy::after { background: var(--kimi-color-text-secondary); }
-    .kw-rain-drops { position: absolute; bottom: -20px; left: 30px; width: 4px; height: 12px; background: var(--kimi-color-accent); border-radius: 2px; animation: kw-rain 0.8s linear infinite; box-shadow: 20px 0 0 var(--kimi-color-accent), 40px 5px 0 var(--kimi-color-accent), 60px -2px 0 var(--kimi-color-accent); }
-    .kw-snow { position: relative; }
-    .kw-snow .kw-cloudy { background: var(--kimi-color-surface-strong); }
-    .kw-snow .kw-cloudy::before { background: var(--kimi-color-surface-raised); }
-    .kw-snow .kw-cloudy::after { background: var(--kimi-color-surface-muted); }
-    .kw-snow-flakes { position: absolute; bottom: -15px; left: 25px; width: 6px; height: 6px; background: var(--kimi-color-text-primary); border-radius: 50%; animation: kw-snow 2s linear infinite; box-shadow: 25px 5px 0 var(--kimi-color-text-primary), 50px -3px 0 var(--kimi-color-text-primary), 70px 8px 0 var(--kimi-color-text-primary); }
-    .kw-storm { position: relative; }
-    .kw-storm .kw-cloudy { background: var(--kimi-color-text-secondary); }
-    .kw-storm .kw-cloudy::before { background: var(--kimi-color-text-primary); }
-    .kw-storm .kw-cloudy::after { background: var(--kimi-color-text-tertiary); }
-    .kw-bolt { position: absolute; bottom: -30px; left: 50px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 30px solid var(--kimi-color-warning); animation: kw-bolt 1.5s ease-in-out infinite; }
+    /* Header */
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--accent), var(--purple)); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px var(--accent-glow); }
+    .brand-icon svg { width: 20px; height: 20px; color: white; }
+    .brand-text { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+    .brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .unit-toggle { display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: var(--radius-sm); background: var(--bg-raised); border: 1px solid var(--border); }
+    .unit-toggle button { padding: 5px 10px; border: none; background: transparent; color: var(--text-tertiary); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: all var(--transition); }
+    .unit-toggle button.active { background: var(--text-primary); color: var(--bg); }
+    .icon-btn { width: 34px; height: 34px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-raised); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); position: relative; }
+    .icon-btn:hover { background: var(--bg-strong); color: var(--text-primary); border-color: var(--border-hover); }
+    .icon-btn .badge { position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--danger); border: 2px solid var(--bg-raised); }
 
-    @keyframes kw-pulse { 0%,100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.05); opacity: 1; } }
-    @keyframes kw-rain { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
-    @keyframes kw-snow { 0% { transform: translateY(0) translateX(0); opacity: 1; } 100% { transform: translateY(25px) translateX(10px); opacity: 0; } }
-    @keyframes kw-bolt { 0%,90%,100% { opacity: 0; } 92%,96% { opacity: 1; } }
+    /* Favorites sidebar toggle */
+    .fav-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 280px; background: var(--bg-glass); backdrop-filter: blur(20px); border-left: 1px solid var(--border); z-index: 100; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 24px; overflow-y: auto; }
+    .fav-drawer.open { transform: translateX(0); }
+    .fav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .fav-drawer-overlay.open { opacity: 1; pointer-events: auto; }
+    .fav-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+    .fav-close { width: 28px; height: 28px; border-radius: 50%; border: none; background: transparent; color: var(--text-muted); cursor: pointer; }
+    .fav-close:hover { color: var(--text-primary); }
+    .fav-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: var(--radius-md); background: var(--bg-raised); border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; transition: all var(--transition); }
+    .fav-item:hover { background: var(--bg-strong); border-color: var(--border-hover); }
+    .fav-item-name { font-size: 14px; font-weight: 500; }
+    .fav-item-temp { font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .fav-item-remove { width: 22px; height: 22px; border-radius: 4px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; opacity: 0; transition: opacity var(--transition); display: flex; align-items: center; justify-content: center; }
+    .fav-item:hover .fav-item-remove { opacity: 1; }
+    .fav-item-remove:hover { color: var(--danger); }
+    .fav-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 13px; }
+    .fav-add-btn { width: 100%; padding: 10px; border-radius: var(--radius-md); border: 1px dashed var(--border); background: transparent; color: var(--text-tertiary); font-size: 13px; cursor: pointer; transition: all var(--transition); margin-top: 8px; }
+    .fav-add-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    .kw-section-title { font-size: 14px; font-weight: 500; color: var(--kimi-color-text-secondary); margin-bottom: 12px; }
-    .kw-hourly { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
-    .kw-hourly::-webkit-scrollbar { height: 4px; }
-    .kw-hourly::-webkit-scrollbar-thumb { background: var(--kimi-color-border); border-radius: 2px; }
-    .kw-hour { flex: 0 0 64px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 8px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); transition: background var(--t-fast) var(--ease-out); }
-    .kw-hour:hover { background: var(--kimi-color-surface-raised); }
-    .kw-hour-time { font-size: 12px; color: var(--kimi-color-text-tertiary); }
-    .kw-hour-temp { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
-    .kw-hour-icon { width: 24px; height: 24px; }
+    /* Search */
+    .search-wrap { position: relative; margin-bottom: 24px; }
+    .searchbar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-lg); background: var(--bg-raised); border: 1px solid var(--border); transition: border-color var(--transition), box-shadow var(--transition); }
+    .searchbar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .searchbar input { flex: 1; border: none; outline: none; background: transparent; color: var(--text-primary); font-size: 16px; font-family: var(--font-sans); }
+    .searchbar input::placeholder { color: var(--text-muted); }
+    .searchbar svg { color: var(--text-muted); flex-shrink: 0; }
+    .suggestions { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; z-index: 50; display: none; box-shadow: var(--shadow-lg); max-height: 320px; overflow-y: auto; }
+    .suggestions.show { display: block; }
+    .suggestion { padding: 12px 16px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 10px; transition: background var(--transition); border-bottom: 1px solid var(--border); }
+    .suggestion:last-child { border-bottom: none; }
+    .suggestion:hover { background: var(--bg-strong); }
+    .suggestion-name { font-weight: 500; }
+    .suggestion-meta { color: var(--text-tertiary); font-size: 12px; }
+    .suggestion-flag { font-size: 16px; }
+    .recent-label { padding: 8px 16px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; border-bottom: 1px solid var(--border); }
 
-    .kw-daily { display: flex; flex-direction: column; gap: 8px; }
-    .kw-day-row { display: grid; grid-template-columns: 80px 1fr 60px 60px; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); transition: background var(--t-fast) var(--ease-out); }
-    .kw-day-row:hover { background: var(--kimi-color-surface-raised); }
-    .kw-day-name { font-size: 14px; font-weight: 500; }
-    .kw-day-bar { height: 6px; border-radius: 3px; background: var(--kimi-color-surface-muted); position: relative; overflow: hidden; }
-    .kw-day-bar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--kimi-color-accent); }
-    .kw-day-lo { font-size: 14px; color: var(--kimi-color-text-tertiary); text-align: right; font-variant-numeric: tabular-nums; }
-    .kw-day-hi { font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+    /* Hero */
+    .hero { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-md); transition: all var(--transition); position: relative; overflow: hidden; }
+    .hero:hover { box-shadow: var(--shadow-lg); }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+    @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; } }
 
-    .kw-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    @media (max-width: 600px) { .kw-details { grid-template-columns: repeat(2, 1fr); } }
-    .kw-detail { padding: 16px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); display: flex; flex-direction: column; gap: 6px; }
-    .kw-detail-label { font-size: 12px; color: var(--kimi-color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
-    .kw-detail-value { font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .location-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .city-name { font-size: 32px; font-weight: 600; letter-spacing: -0.5px; line-height: 1.1; }
+    .country-name { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+    .live-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--success); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 20px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); }
+    .live-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    .kw-chart-wrap { padding: 16px; border-radius: 10px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); }
-    .kw-chart-svg { width: 100%; height: 160px; }
+    .temp-display { display: flex; align-items: flex-start; gap: 6px; margin: 8px 0; }
+    .temp-value { font-size: 80px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; letter-spacing: -2px; transition: all 0.3s ease; }
+    .temp-unit { font-size: 28px; color: var(--text-secondary); font-weight: 400; margin-top: 8px; }
+    .feels-like { font-size: 14px; color: var(--text-tertiary); margin-bottom: 12px; }
+    .condition-row { display: flex; align-items: center; gap: 10px; font-size: 18px; color: var(--text-secondary); margin-bottom: 16px; }
+    .condition-icon { width: 28px; height: 28px; }
+    .hl-row { display: flex; gap: 20px; font-size: 14px; color: var(--text-tertiary); flex-wrap: wrap; }
+    .hl-item { display: flex; align-items: center; gap: 6px; }
+    .hl-item svg { color: var(--text-muted); }
 
-    .kw-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .kw-chip { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--kimi-color-border); background: var(--kimi-color-surface); font-size: 13px; cursor: pointer; transition: all var(--t-fast) var(--ease-out); color: var(--kimi-color-text-secondary); }
-    .kw-chip:hover { background: var(--kimi-color-surface-raised); color: var(--kimi-color-text-primary); border-color: var(--kimi-color-text-tertiary); }
-    .kw-chip.active { background: var(--kimi-color-text-primary); color: var(--kimi-color-surface); border-color: var(--kimi-color-text-primary); }
+    /* Recommendation chip */
+    .recommendation { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--radius-md); background: var(--bg-raised); border: 1px solid var(--border); font-size: 13px; color: var(--text-secondary); margin-top: 12px; }
+    .recommendation svg { color: var(--accent); }
 
-    .kw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
-    @media (max-width: 720px) { .kw-grid { grid-template-columns: 1fr; } }
+    /* Visuals */
+    .visual { display: flex; align-items: center; justify-content: center; min-height: 220px; position: relative; }
+    .weather-visual { position: relative; }
+    .vis-sun { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0%, #fbbf24 30%, #f59e0b 60%, transparent 100%); box-shadow: 0 0 80px rgba(251,191,36,0.3), 0 0 40px rgba(245,158,11,0.2), inset 0 0 30px rgba(255,255,255,0.1); animation: sun-pulse 5s ease-in-out infinite; }
+    @keyframes sun-pulse { 0%,100% { transform: scale(1); box-shadow: 0 0 80px rgba(251,191,36,0.3); } 50% { transform: scale(1.06); box-shadow: 0 0 100px rgba(251,191,36,0.45); } }
+    .vis-moon { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #e2e8f0 0%, #94a3b8 50%, #64748b 100%); box-shadow: 0 0 50px rgba(148,163,184,0.2), inset -15px -10px 20px rgba(0,0,0,0.3); position: relative; }
+    .vis-moon::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.15); top: 25px; left: 30px; box-shadow: 25px 10px 0 rgba(0,0,0,0.1), 10px 35px 0 rgba(0,0,0,0.12), 40px 30px 0 rgba(0,0,0,0.08); }
+    .vis-cloud { width: 160px; height: 90px; background: linear-gradient(180deg, #3a3a50 0%, #2a2a3a 100%); border-radius: 70px; position: relative; opacity: 0.9; }
+    .vis-cloud::before { content: ''; position: absolute; width: 80px; height: 80px; background: linear-gradient(180deg, #454560 0%, #353545 100%); border-radius: 50%; top: -40px; left: 25px; }
+    .vis-cloud::after { content: ''; position: absolute; width: 55px; height: 55px; background: linear-gradient(180deg, #404055 0%, #303040 100%); border-radius: 50%; top: -28px; left: 70px; }
+    .vis-rain { position: relative; }
+    .vis-rain .vis-cloud { background: linear-gradient(180deg, #4a4a60 0%, #3a3a4a 100%); }
+    .vis-rain .vis-cloud::before { background: linear-gradient(180deg, #555570 0%, #454555 100%); }
+    .vis-rain .vis-cloud::after { background: linear-gradient(180deg, #505065 0%, #404050 100%); }
+    .rain-drops { position: absolute; bottom: -25px; left: 35px; width: 3px; height: 14px; background: linear-gradient(180deg, var(--accent), transparent); border-radius: 2px; opacity: 0.7; animation: rain-fall 0.7s linear infinite; box-shadow: 22px 3px 0 var(--accent), 44px -1px 0 var(--accent), 66px 4px 0 var(--accent), 88px 0px 0 var(--accent); }
+    @keyframes rain-fall { 0% { transform: translateY(0); opacity: 0.7; } 100% { transform: translateY(30px); opacity: 0; } }
+    .vis-snow { position: relative; }
+    .snow-flakes { position: absolute; bottom: -20px; left: 30px; width: 5px; height: 5px; background: var(--text-primary); border-radius: 50%; opacity: 0.6; animation: snow-fall 2.5s linear infinite; box-shadow: 28px 6px 0 var(--text-primary), 55px -4px 0 var(--text-primary), 80px 8px 0 var(--text-primary), 105px 2px 0 var(--text-primary); }
+    @keyframes snow-fall { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; } 100% { transform: translateY(40px) translateX(15px) rotate(180deg); opacity: 0; } }
+    .vis-storm { position: relative; }
+    .vis-storm .vis-cloud { background: linear-gradient(180deg, #555570 0%, #3a3a50 100%); }
+    .bolt { position: absolute; bottom: -35px; left: 55px; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 28px solid var(--warning); animation: bolt-flash 2s ease-in-out infinite; filter: drop-shadow(0 0 8px var(--warning)); }
+    @keyframes bolt-flash { 0%,85%,100% { opacity: 0; } 87%,93% { opacity: 1; } }
+    .vis-fog { width: 150px; height: 80px; position: relative; }
+    .fog-layer { position: absolute; width: 100%; height: 20px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); border-radius: 10px; animation: fog-drift 4s ease-in-out infinite alternate; }
+    .fog-layer:nth-child(1) { top: 10px; animation-delay: 0s; }
+    .fog-layer:nth-child(2) { top: 35px; animation-delay: 1.3s; }
+    .fog-layer:nth-child(3) { top: 55px; animation-delay: 2.6s; }
+    @keyframes fog-drift { 0% { transform: translateX(-10px); } 100% { transform: translateX(10px); } }
 
-    .kw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .kw-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 500; }
-    .kw-brand-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--kimi-color-text-primary); display: flex; align-items: center; justify-content: center; }
-    .kw-brand-icon svg { width: 18px; height: 18px; color: var(--kimi-color-surface); }
-    .kw-unit-badge { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--kimi-color-border); font-size: 12px; font-weight: 500; color: var(--kimi-color-text-secondary); background: var(--kimi-color-surface); }
+    /* Kelvin fact */
+    .kelvin-fact { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-md); background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(168,85,247,0.08)); border: 1px solid rgba(59,130,246,0.15); margin-top: 16px; font-size: 13px; color: var(--text-secondary); }
+    .kelvin-fact svg { color: var(--accent); flex-shrink: 0; }
+    .kelvin-fact strong { color: var(--text-primary); }
 
-    .kw-suggestions { position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; background: var(--kimi-color-surface-raised); border: 1px solid var(--kimi-color-border); border-radius: 10px; overflow: hidden; z-index: 10; display: none; }
-    .kw-suggestions.show { display: block; }
-    .kw-suggestion { padding: 10px 14px; cursor: pointer; font-size: 14px; transition: background var(--t-fast) var(--ease-out); }
-    .kw-suggestion:hover { background: var(--kimi-color-surface-strong); }
-    .kw-suggestion:not(:last-child) { border-bottom: 1px solid var(--kimi-color-border); }
-    .kw-search-wrap { position: relative; }
+    /* Section titles */
+    .section-title { font-size: 13px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .section-title::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--accent); }
 
-    .kw-now { font-size: 13px; color: var(--kimi-color-text-quaternary); margin-top: 4px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .grid-3 { grid-template-columns: 1fr; } }
 
-    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: var(--kimi-color-text-quaternary); }
+    .card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all var(--transition); }
+    .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-md); }
+
+    /* Hourly */
+    .hourly-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
+    .hourly-scroll::-webkit-scrollbar { height: 4px; }
+    .hourly-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .hour-card { flex: 0 0 72px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border-radius: var(--radius-md); background: var(--bg-raised); border: 1px solid var(--border); transition: all var(--transition); cursor: pointer; }
+    .hour-card:hover { background: var(--bg-strong); border-color: var(--border-hover); transform: translateY(-2px); }
+    .hour-card.now { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+    .hour-time { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+    .hour-time.now { color: var(--accent); }
+    .hour-icon { width: 24px; height: 24px; }
+    .hour-temp { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .hour-precip { font-size: 10px; color: var(--accent); font-weight: 600; }
+
+    /* Daily */
+    .daily-list { display: flex; flex-direction: column; gap: 6px; }
+    .day-row { display: grid; grid-template-columns: 70px 1fr 55px 55px; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-md); background: var(--bg-raised); border: 1px solid var(--border); transition: all var(--transition); cursor: pointer; }
+    .day-row:hover { background: var(--bg-strong); border-color: var(--border-hover); }
+    .day-name { font-size: 13px; font-weight: 600; }
+    .day-bar-wrap { height: 6px; border-radius: 3px; background: var(--bg-strong); position: relative; overflow: hidden; }
+    .day-bar-fill { position: absolute; height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--purple)); transition: all var(--transition); }
+    .day-lo { font-size: 13px; color: var(--text-tertiary); text-align: right; font-variant-numeric: tabular-nums; }
+    .day-hi { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* Chart */
+    .chart-card { padding: 20px; }
+    .chart-svg { width: 100%; height: 180px; }
+    .chart-tooltip { position: absolute; background: var(--bg-strong); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 12px; font-weight: 500; pointer-events: none; opacity: 0; transition: opacity var(--transition); z-index: 10; white-space: nowrap; }
+    .chart-wrap { position: relative; }
+
+    /* Details */
+    .detail-card { padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .detail-header { display: flex; align-items: center; gap: 8px; }
+    .detail-icon { width: 18px; height: 18px; color: var(--text-tertiary); }
+    .detail-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+    .detail-value { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .detail-sub { font-size: 12px; color: var(--text-muted); }
+    .uv-low { color: var(--success); } .uv-moderate { color: var(--warning); } .uv-high { color: var(--danger); }
+
+    /* AQI Card */
+    .aqi-card { padding: 18px; }
+    .aqi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .aqi-value { font-size: 36px; font-weight: 600; line-height: 1; }
+    .aqi-label { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-sm); }
+    .aqi-good { color: var(--success); background: rgba(34,197,94,0.1); }
+    .aqi-moderate { color: var(--warning); background: rgba(245,158,11,0.1); }
+    .aqi-unhealthy { color: var(--danger); background: rgba(239,68,68,0.1); }
+    .aqi-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--success) 0%, var(--warning) 50%, var(--danger) 100%); position: relative; margin-bottom: 12px; }
+    .aqi-marker { position: absolute; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: white; border: 3px solid var(--bg-raised); box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: left 0.5s ease; }
+    .aqi-pollutants { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .aqi-pollutant { text-align: center; padding: 8px; border-radius: var(--radius-sm); background: var(--bg-raised); }
+    .aqi-pollutant-name { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .aqi-pollutant-val { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+    /* Compass */
+    .compass { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border); position: relative; margin: 0 auto 8px; }
+    .compass-needle { position: absolute; top: 50%; left: 50%; width: 2px; height: 18px; background: var(--accent); transform-origin: bottom center; transform: translate(-50%, -100%) rotate(0deg); transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 1px; }
+    .compass-needle::after { content: ''; position: absolute; top: -4px; left: -3px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid var(--accent); }
+    .compass-label { position: absolute; font-size: 8px; color: var(--text-muted); font-weight: 600; }
+    .compass-label.n { top: 2px; left: 50%; transform: translateX(-50%); }
+    .compass-label.e { right: 2px; top: 50%; transform: translateY(-50%); }
+    .compass-label.s { bottom: 2px; left: 50%; transform: translateX(-50%); }
+    .compass-label.w { left: 2px; top: 50%; transform: translateY(-50%); }
+
+    .sun-times { display: flex; gap: 16px; }
+    .sun-time { display: flex; align-items: center; gap: 8px; flex: 1; }
+    .sun-time-icon { width: 20px; height: 20px; color: var(--warning); }
+    .sun-time-label { font-size: 11px; color: var(--text-tertiary); }
+    .sun-time-value { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* Cities chips */
+    .cities-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .city-chip { padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-raised); font-size: 13px; cursor: pointer; transition: all var(--transition); color: var(--text-secondary); font-weight: 500; }
+    .city-chip:hover { background: var(--bg-strong); color: var(--text-primary); border-color: var(--border-hover); }
+    .city-chip.active { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
+
+    /* Error */
+    .error-banner { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: var(--danger); padding: 12px 16px; border-radius: var(--radius-md); font-size: 13px; margin-bottom: 16px; display: none; align-items: center; gap: 8px; }
+    .error-banner.show { display: flex; }
+
+    .footer { text-align: center; padding: 40px 0 20px; font-size: 12px; color: var(--text-muted); }
+    .footer a { color: var(--text-tertiary); text-decoration: none; }
+    .footer a:hover { color: var(--text-secondary); }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg-strong); border: 1px solid var(--border); color: var(--text-primary); padding: 10px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: all var(--transition); z-index: 100; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .page-transition { animation: pageSwap 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes pageSwap { 0% { opacity: 0; transform: translateY(12px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bg-strong); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
   </style>
 <base target="_blank">
 </head>
 <body>
-  <div class="container">
-    <div class="kw-root">
-      <div class="kw-header">
-        <div class="kw-brand">
-          <div class="kw-brand-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <span>KelvinCast</span>
-        </div>
-        <div class="kw-unit-badge">K — Absolute Scale</div>
-      </div>
+  <div class="bg-layer clear" id="bg-layer"></div>
+  <div class="particles" id="particles"></div>
+  <div class="fav-drawer-overlay" id="fav-overlay"></div>
+  <div class="fav-drawer" id="fav-drawer">
+    <div class="fav-title">
+      <span>Saved Locations</span>
+      <button class="fav-close" id="fav-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div id="fav-list"></div>
+    <button class="fav-add-btn" id="fav-add-current">+ Add current location</button>
+  </div>
 
-      <div class="kw-hero" style="margin-top: 16px;">
-        <div class="kw-search-wrap">
-          <div class="kw-searchbar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="color: var(--kimi-color-text-quaternary); flex-shrink: 0;"><path d="M11.5 3C16.1944 3 20 6.80558 20 11.5C20 13.523 19.2933 15.381 18.1132 16.8404L21.1364 19.8636C21.4879 20.2151 21.4879 20.7849 21.1364 21.1364C20.7849 21.4879 20.2151 21.4879 19.8636 21.1364L16.8404 18.1132C15.381 19.2933 13.523 20 11.5 20C6.80558 20 3 16.1944 3 11.5C3 6.80558 6.80558 3 11.5 3ZM11.5 18.2C15.2003 18.2 18.2 15.2003 18.2 11.5C18.2 7.79969 15.2003 4.8 11.5 4.8C7.79969 4.8 4.8 7.79969 4.8 11.5C4.8 15.2003 7.79969 18.2 11.5 18.2Z" fill="currentColor"/></svg>
-            <input type="text" id="kw-search" placeholder="Search city..." autocomplete="off" />
-            <button id="kw-refresh" aria-label="Refresh">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.88048 6.89231C9.69226 4.08054 14.251 4.08054 17.0628 6.89231L16.2364 7.71871C15.7324 8.22268 16.0894 9.0844 16.8021 9.0844H19.7276C20.1694 9.0844 20.5276 8.72623 20.5276 8.2844V5.35891C20.5276 4.64619 19.6659 4.28926 19.1619 4.79323L18.3356 5.61952C14.8209 2.1048 9.12241 2.1048 5.60769 5.61952C2.09297 9.13424 2.09297 14.8327 5.60769 18.3474C9.12241 21.8622 14.8209 21.8622 18.3356 18.3474C19.4929 17.1902 20.2703 15.7937 20.6655 14.3163C20.7939 13.8361 20.5087 13.3428 20.0285 13.2143C19.5483 13.0859 19.055 13.3711 18.9266 13.8513C18.611 15.0314 17.9906 16.1469 17.0628 17.0746C14.251 19.8864 9.69226 19.8864 6.88048 17.0746C4.06871 14.2629 4.06871 9.70409 6.88048 6.89231Z" fill="currentColor"/></svg>
-            </button>
-          </div>
-          <div class="kw-suggestions" id="kw-suggestions"></div>
-        </div>
-
-        <div class="kw-main">
-          <div class="kw-current">
-            <div>
-              <div class="kw-city" id="kw-city">London</div>
-              <div class="kw-sub" id="kw-country">United Kingdom</div>
-              <div class="kw-now" id="kw-now">Monday, 14:32</div>
-            </div>
-            <div style="display: flex; align-items: flex-start; gap: 8px;">
-              <span class="kw-temp-big" id="kw-temp">288.7</span>
-              <span class="kw-temp-unit">K</span>
-            </div>
-            <div class="kw-condition" id="kw-condition">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>Partly cloudy</span>
-            </div>
-            <div class="kw-hl">
-              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 2.36129C11.7378 2.01198 12.3059 2.013 12.6565 2.36358L18.1949 7.90204C18.5464 8.25351 18.5464 8.82336 18.1949 9.17483C17.8434 9.52631 17.2736 9.52631 16.9221 9.17483L12.9201 5.17277V21C12.9201 21.497 12.5171 21.9 12.0201 21.9C11.523 21.9 11.1201 21.497 11.1201 21V5.16172L7.07554 9.17713C6.7228 9.52733 6.15295 9.52527 5.80275 9.17253C5.45255 8.81979 5.45461 8.24995 5.80735 7.89975L11.386 2.36129Z" fill="currentColor"/></svg> <span id="kw-hi">292.1 K</span></span>
-              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45461 15.7501 5.80735 16.1003L11.386 21.6387Z" fill="currentColor"/></svg> <span id="kw-lo">285.4 K</span></span>
-            </div>
-          </div>
-          <div class="kw-visual" id="kw-visual">
-            <div class="kw-sun"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="kw-grid">
-        <div>
-          <div class="kw-section-title">Hourly forecast</div>
-          <div class="kw-hourly" id="kw-hourly"></div>
-        </div>
-        <div>
-          <div class="kw-section-title">7-day forecast</div>
-          <div class="kw-daily" id="kw-daily"></div>
-        </div>
-      </div>
-
-      <div style="margin-top: 24px;">
-        <div class="kw-section-title">Temperature trend</div>
-        <div class="kw-chart-wrap">
-          <svg class="kw-chart-svg" id="kw-chart" viewBox="0 0 600 160" preserveAspectRatio="none"></svg>
-        </div>
-      </div>
-
-      <div style="margin-top: 24px;">
-        <div class="kw-section-title">Current details</div>
-        <div class="kw-details" id="kw-details"></div>
-      </div>
-
-      <div style="margin-top: 24px;">
-        <div class="kw-section-title">Popular locations</div>
-        <div class="kw-cities" id="kw-cities"></div>
+  <div class="app">
+    <div class="install-banner" id="install-banner">
+      <span class="install-banner-text"><strong>KelvinCast Pro</strong> — Add to your home screen for instant weather</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="install-btn" id="install-btn">Install</button>
+        <button class="install-close" id="install-close">&times;</button>
       </div>
     </div>
 
-    <div class="footer">KelvinCast — All temperatures in Kelvin. No ambiguity. Absolute precision.</div>
+    <div class="alert-banner" id="alert-banner">
+      <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg>
+      <div class="alert-content">
+        <div class="alert-title" id="alert-title">Severe Weather Alert</div>
+        <div class="alert-text" id="alert-text">Heavy thunderstorm expected in the next 3 hours.</div>
+        <div class="alert-time" id="alert-time">Issued: 14:30</div>
+      </div>
+    </div>
+
+    <div class="header fade-in">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="white"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="brand-text">KelvinCast</div>
+          <div class="brand-sub">Absolute Weather Intelligence</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="unit-toggle">
+          <button id="btn-k" class="active">K</button>
+          <button id="btn-c">°C</button>
+        </div>
+        <button class="icon-btn" id="btn-fav" aria-label="Saved locations" title="Saved locations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-locate" aria-label="My location" title="My location">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-share" aria-label="Share" title="Share">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-refresh" aria-label="Refresh" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="error-banner" id="error-banner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/></svg>
+      <span id="error-text">Unable to fetch weather data. Showing cached data.</span>
+    </div>
+
+    <div class="search-wrap fade-in">
+      <div class="searchbar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/></svg>
+        <input type="text" id="search-input" placeholder="Search any city worldwide..." autocomplete="off" />
+      </div>
+      <div class="suggestions" id="suggestions"></div>
+    </div>
+
+    <div class="hero fade-in" id="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="location-row">
+            <span class="city-name" id="city-name">London</span>
+            <span class="live-badge">Live</span>
+          </div>
+          <div class="country-name" id="country-name">United Kingdom</div>
+          <div class="temp-display">
+            <span class="temp-value" id="temp-value">288.7</span>
+            <span class="temp-unit" id="temp-unit">K</span>
+          </div>
+          <div class="feels-like" id="feels-like">Feels like 286.2 K</div>
+          <div class="condition-row" id="condition-row">
+            <span class="condition-icon" id="condition-icon"></span>
+            <span id="condition-text">Partly cloudy</span>
+          </div>
+          <div class="hl-row">
+            <span class="hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 14l5-5 5 5z" fill="currentColor"/></svg> <span id="hi-temp">292.1 K</span></span>
+            <span class="hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg> <span id="lo-temp">285.4 K</span></span>
+            <span class="hl-item" id="precip-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8z" fill="currentColor"/></svg> <span id="precip-val">0%</span></span>
+          </div>
+          <div class="recommendation" id="recommendation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+            <span id="recommendation-text">Perfect weather for a walk</span>
+          </div>
+          <div class="kelvin-fact" id="kelvin-fact">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/></svg>
+            <span id="fact-text"><strong>Did you know?</strong> 273.15 K is the freezing point of water — the triple point where ice, water, and vapor coexist.</span>
+          </div>
+        </div>
+        <div class="visual" id="visual"></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card fade-in">
+        <div class="section-title">Hourly forecast</div>
+        <div class="hourly-scroll" id="hourly"></div>
+      </div>
+      <div class="card fade-in">
+        <div class="section-title">7-day forecast</div>
+        <div class="daily-list" id="daily"></div>
+      </div>
+    </div>
+
+    <div class="card chart-card fade-in" style="margin-top: 20px;">
+      <div class="section-title">Temperature trend (24h)</div>
+      <div class="chart-wrap">
+        <svg class="chart-svg" id="chart" viewBox="0 0 700 180" preserveAspectRatio="none"></svg>
+        <div class="chart-tooltip" id="chart-tooltip"></div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" fill="currentColor"/></svg>
+          <div class="detail-label">Wind</div>
+        </div>
+        <div class="compass" id="compass">
+          <div class="compass-needle" id="compass-needle"></div>
+          <span class="compass-label n">N</span><span class="compass-label e">E</span>
+          <span class="compass-label s">S</span><span class="compass-label w">W</span>
+        </div>
+        <div class="detail-value" id="wind-value">18 km/h</div>
+        <div class="detail-sub" id="wind-dir">Southwest</div>
+      </div>
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+          <div class="detail-label">Humidity</div>
+        </div>
+        <div class="detail-value" id="humidity-value">72%</div>
+        <div class="detail-sub" id="humidity-sub">Dew point 283.9 K</div>
+      </div>
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" fill="currentColor"/></svg>
+          <div class="detail-label">Pressure</div>
+        </div>
+        <div class="detail-value" id="pressure-value">1013 hPa</div>
+        <div class="detail-sub" id="pressure-sub">Steady</div>
+      </div>
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000 1.41.996.996 0 001.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06z" fill="currentColor"/></svg>
+          <div class="detail-label">UV Index</div>
+        </div>
+        <div class="detail-value" id="uv-value">3</div>
+        <div class="detail-sub" id="uv-sub">Moderate</div>
+      </div>
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+          <div class="detail-label">Visibility</div>
+        </div>
+        <div class="detail-value" id="visibility-value">10 km</div>
+        <div class="detail-sub">Good</div>
+      </div>
+      <div class="card detail-card fade-in">
+        <div class="detail-header">
+          <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V22h-2v4.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z" fill="currentColor"/></svg>
+          <div class="detail-label">Sun</div>
+        </div>
+        <div class="sun-times" style="margin-top:4px;">
+          <div class="sun-time">
+            <svg class="sun-time-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V22h-2v4.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z" fill="currentColor"/></svg>
+            <div>
+              <div class="sun-time-label">Rise</div>
+              <div class="sun-time-value" id="sunrise">06:12</div>
+            </div>
+          </div>
+          <div class="sun-time">
+            <svg class="sun-time-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" style="color:var(--purple)"><path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" fill="currentColor"/></svg>
+            <div>
+              <div class="sun-time-label">Set</div>
+              <div class="sun-time-value" id="sunset">20:45</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card aqi-card fade-in" style="margin-top: 20px;">
+      <div class="section-title">Air Quality</div>
+      <div class="aqi-header">
+        <div>
+          <div class="aqi-value" id="aqi-value">42</div>
+          <div class="detail-sub" style="margin-top:4px;">US AQI Scale</div>
+        </div>
+        <div class="aqi-label aqi-good" id="aqi-label">Good</div>
+      </div>
+      <div class="aqi-bar">
+        <div class="aqi-marker" id="aqi-marker" style="left:16%;"></div>
+      </div>
+      <div class="aqi-pollutants" id="aqi-pollutants">
+        <div class="aqi-pollutant"><div class="aqi-pollutant-name">PM2.5</div><div class="aqi-pollutant-val" id="aqi-pm25">12</div></div>
+        <div class="aqi-pollutant"><div class="aqi-pollutant-name">PM10</div><div class="aqi-pollutant-val" id="aqi-pm10">18</div></div>
+        <div class="aqi-pollutant"><div class="aqi-pollutant-name">O₃</div><div class="aqi-pollutant-val" id="aqi-o3">35</div></div>
+        <div class="aqi-pollutant"><div class="aqi-pollutant-name">NO₂</div><div class="aqi-pollutant-val" id="aqi-no2">8</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px;" class="fade-in">
+      <div class="section-title">Popular locations</div>
+      <div class="cities-wrap" id="cities-wrap"></div>
+    </div>
+
+    <div class="footer">
+      KelvinCast Pro — All temperatures in Kelvin. No ambiguity. Absolute precision.<br>
+      Data powered by <a href="https://open-meteo.com" target="_blank">Open-Meteo</a> &middot; Built for absolute scale enthusiasts
+    </div>
   </div>
+
+  <div class="toast" id="toast">Copied to clipboard!</div>
 
   <script>
   (function() {
-    const cities = {
-      'London': { country: 'United Kingdom', temp: 288.7, condition: 'Partly cloudy', hi: 292.1, lo: 285.4, humidity: 72, wind: 18, pressure: 1013, visibility: 10, uv: 3, dewpoint: 283.9, type: 'cloudy' },
-      'New York': { country: 'United States', temp: 295.4, condition: 'Sunny', hi: 298.2, lo: 291.7, humidity: 55, wind: 12, pressure: 1018, visibility: 16, uv: 7, dewpoint: 285.6, type: 'sunny' },
-      'Tokyo': { country: 'Japan', temp: 301.2, condition: 'Rainy', hi: 303.5, lo: 298.8, humidity: 85, wind: 22, pressure: 1005, visibility: 6, uv: 2, dewpoint: 298.3, type: 'rain' },
-      'Sydney': { country: 'Australia', temp: 283.5, condition: 'Clear night', hi: 288.9, lo: 280.1, humidity: 68, wind: 25, pressure: 1020, visibility: 14, uv: 0, dewpoint: 277.4, type: 'clear' },
-      'Paris': { country: 'France', temp: 291.3, condition: 'Overcast', hi: 293.8, lo: 288.6, humidity: 65, wind: 14, pressure: 1015, visibility: 9, uv: 4, dewpoint: 284.7, type: 'cloudy' },
-      'Dubai': { country: 'UAE', temp: 312.5, condition: 'Scorching', hi: 315.2, lo: 306.8, humidity: 30, wind: 28, pressure: 1002, visibility: 8, uv: 11, dewpoint: 290.1, type: 'sunny' },
-      'Moscow': { country: 'Russia', temp: 275.9, condition: 'Snow', hi: 278.4, lo: 272.1, humidity: 80, wind: 20, pressure: 1025, visibility: 4, uv: 1, dewpoint: 272.8, type: 'snow' },
-      'Singapore': { country: 'Singapore', temp: 304.8, condition: 'Thunderstorm', hi: 307.1, lo: 302.3, humidity: 90, wind: 15, pressure: 1008, visibility: 5, uv: 3, dewpoint: 302.9, type: 'storm' },
-      'Reykjavik': { country: 'Iceland', temp: 273.2, condition: 'Freezing fog', hi: 275.6, lo: 270.9, humidity: 88, wind: 30, pressure: 1028, visibility: 2, uv: 0, dewpoint: 271.5, type: 'snow' },
-      'Mumbai': { country: 'India', temp: 305.6, condition: 'Humid', hi: 308.3, lo: 301.2, humidity: 78, wind: 10, pressure: 1006, visibility: 7, uv: 9, dewpoint: 301.4, type: 'cloudy' },
-      'Cairo': { country: 'Egypt', temp: 310.2, condition: 'Hot & dry', hi: 313.5, lo: 303.1, humidity: 22, wind: 16, pressure: 1010, visibility: 12, uv: 10, dewpoint: 283.2, type: 'sunny' },
-      'Rio de Janeiro': { country: 'Brazil', temp: 298.7, condition: 'Partly cloudy', hi: 301.4, lo: 295.9, humidity: 74, wind: 19, pressure: 1014, visibility: 11, uv: 6, dewpoint: 293.8, type: 'cloudy' },
-      'Berlin': { country: 'Germany', temp: 286.4, condition: 'Light rain', hi: 288.9, lo: 283.7, humidity: 76, wind: 17, pressure: 1012, visibility: 8, uv: 2, dewpoint: 282.3, type: 'rain' },
-      'Toronto': { country: 'Canada', temp: 280.5, condition: 'Snow showers', hi: 283.1, lo: 277.8, humidity: 82, wind: 24, pressure: 1022, visibility: 5, uv: 1, dewpoint: 277.2, type: 'snow' },
-      'Bangkok': { country: 'Thailand', temp: 306.1, condition: 'Monsoon rain', hi: 308.9, lo: 303.4, humidity: 86, wind: 13, pressure: 1007, visibility: 6, uv: 5, dewpoint: 303.7, type: 'rain' },
-      'Los Angeles': { country: 'United States', temp: 299.3, condition: 'Sunny', hi: 302.1, lo: 294.5, humidity: 48, wind: 9, pressure: 1016, visibility: 18, uv: 8, dewpoint: 287.2, type: 'sunny' },
-      'Seoul': { country: 'South Korea', temp: 289.6, condition: 'Cloudy', hi: 292.3, lo: 286.8, humidity: 60, wind: 15, pressure: 1014, visibility: 10, uv: 4, dewpoint: 281.5, type: 'cloudy' },
-      'Mexico City': { country: 'Mexico', temp: 293.8, condition: 'Partly cloudy', hi: 296.5, lo: 290.2, humidity: 52, wind: 11, pressure: 1019, visibility: 13, uv: 6, dewpoint: 283.1, type: 'cloudy' },
-      'Nairobi': { country: 'Kenya', temp: 294.5, condition: 'Sunny', hi: 297.2, lo: 290.8, humidity: 45, wind: 14, pressure: 1017, visibility: 15, uv: 9, dewpoint: 281.4, type: 'sunny' },
-      'Helsinki': { country: 'Finland', temp: 278.3, condition: 'Overcast', hi: 280.7, lo: 275.9, humidity: 70, wind: 21, pressure: 1024, visibility: 9, uv: 1, dewpoint: 273.2, type: 'cloudy' }
+    // ====== STATE ======
+    let currentCity = 'London';
+    let currentLat = 51.5074;
+    let currentLon = -0.1278;
+    let currentCountry = 'United Kingdom';
+    let unit = 'K';
+    let weatherData = null;
+    let aqiData = null;
+    let isLoading = false;
+    let searchTimeout = null;
+    let deferredPrompt = null;
+    let favorites = JSON.parse(localStorage.getItem('kelvincast_favorites') || '[]');
+    let recentSearches = JSON.parse(localStorage.getItem('kelvincast_recent') || '[]');
+
+    // ====== KELVIN FACTS ======
+    const kelvinFacts = [
+      '<strong>Did you know?</strong> 273.15 K is the freezing point of water — the triple point where ice, water, and vapor coexist.',
+      '<strong>Absolute zero</strong> (0 K) is the theoretical temperature where all molecular motion stops. It has never been achieved.',
+      '<strong>The Kelvin scale</strong> is the only SI base unit named after a person — Lord Kelvin (William Thomson).',
+      '<strong>Water boils</strong> at 373.15 K at standard atmospheric pressure. That is exactly 100 K above freezing.',
+      '<strong>Room temperature</strong> is typically around 293 K. Your body is approximately 310 K.',
+      '<strong>The cosmic microwave background</strong> radiation has a temperature of 2.725 K — the coldest natural thing in the universe.',
+      '<strong>At 5778 K</strong>, the surface of our Sun is hot enough to vaporize any known material instantly.',
+      '<strong>The Boomerang Nebula</strong> is the coldest known place in the universe at approximately 1 K.',
+      '<strong>Kelvin never uses degrees.</strong> It is not "degrees Kelvin" — just "kelvin" or "K".',
+      '<strong>At 294 K</strong>, the air molecules around you are moving at roughly 500 m/s — faster than a commercial jet.'
+    ];
+
+    // ====== POPULAR CITIES ======
+    const popularCities = [
+      { name: 'London', lat: 51.5074, lon: -0.1278, country: 'United Kingdom' },
+      { name: 'New York', lat: 40.7128, lon: -74.0060, country: 'United States' },
+      { name: 'Tokyo', lat: 35.6762, lon: 139.6503, country: 'Japan' },
+      { name: 'Paris', lat: 48.8566, lon: 2.3522, country: 'France' },
+      { name: 'Sydney', lat: -33.8688, lon: 151.2093, country: 'Australia' },
+      { name: 'Dubai', lat: 25.2048, lon: 55.2708, country: 'UAE' },
+      { name: 'Singapore', lat: 1.3521, lon: 103.8198, country: 'Singapore' },
+      { name: 'Berlin', lat: 52.5200, lon: 13.4050, country: 'Germany' },
+      { name: 'Mumbai', lat: 19.0760, lon: 72.8777, country: 'India' },
+      { name: 'Los Angeles', lat: 34.0522, lon: -118.2437, country: 'United States' },
+      { name: 'Rio de Janeiro', lat: -22.9068, lon: -43.1729, country: 'Brazil' },
+      { name: 'Cairo', lat: 30.0444, lon: 31.2357, country: 'Egypt' },
+      { name: 'Moscow', lat: 55.7558, lon: 37.6173, country: 'Russia' },
+      { name: 'Bangkok', lat: 13.7563, lon: 100.5018, country: 'Thailand' },
+      { name: 'Toronto', lat: 43.6532, lon: -79.3832, country: 'Canada' },
+      { name: 'Seoul', lat: 37.5665, lon: 126.9780, country: 'South Korea' },
+      { name: 'Istanbul', lat: 41.0082, lon: 28.9784, country: 'Turkey' },
+      { name: 'Mexico City', lat: 19.4326, lon: -99.1332, country: 'Mexico' },
+      { name: 'Nairobi', lat: -1.2921, lon: 36.8219, country: 'Kenya' },
+      { name: 'Reykjavik', lat: 64.1466, lon: -21.9426, country: 'Iceland' },
+    ];
+
+    // ====== WMO WEATHER CODES ======
+    const wmoCodes = {
+      0: { label: 'Clear sky', type: 'clear' },
+      1: { label: 'Mainly clear', type: 'clear' },
+      2: { label: 'Partly cloudy', type: 'cloudy' },
+      3: { label: 'Overcast', type: 'cloudy' },
+      45: { label: 'Fog', type: 'fog' },
+      48: { label: 'Rime fog', type: 'fog' },
+      51: { label: 'Light drizzle', type: 'rain' },
+      53: { label: 'Drizzle', type: 'rain' },
+      55: { label: 'Heavy drizzle', type: 'rain' },
+      56: { label: 'Freezing drizzle', type: 'rain' },
+      57: { label: 'Heavy freezing drizzle', type: 'rain' },
+      61: { label: 'Slight rain', type: 'rain' },
+      63: { label: 'Rain', type: 'rain' },
+      65: { label: 'Heavy rain', type: 'rain' },
+      66: { label: 'Freezing rain', type: 'rain' },
+      67: { label: 'Heavy freezing rain', type: 'rain' },
+      71: { label: 'Slight snow', type: 'snow' },
+      73: { label: 'Snow', type: 'snow' },
+      75: { label: 'Heavy snow', type: 'snow' },
+      77: { label: 'Snow grains', type: 'snow' },
+      80: { label: 'Rain showers', type: 'rain' },
+      81: { label: 'Moderate showers', type: 'rain' },
+      82: { label: 'Violent showers', type: 'rain' },
+      85: { label: 'Snow showers', type: 'snow' },
+      86: { label: 'Heavy snow showers', type: 'snow' },
+      95: { label: 'Thunderstorm', type: 'storm' },
+      96: { label: 'Thunderstorm with hail', type: 'storm' },
+      99: { label: 'Severe thunderstorm', type: 'storm' },
     };
 
-    let currentCity = 'London';
-
-    function generateHourly(baseTemp) {
-      const hours = [];
-      const now = new Date().getHours();
-      for (let i = 0; i < 24; i++) {
-        const h = (now + i) % 24;
-        const offset = Math.sin((h - 6) * Math.PI / 12) * 4;
-        const rand = (Math.random() - 0.5) * 1.5;
-        hours.push({ hour: h, temp: +(baseTemp + offset + rand).toFixed(1) });
-      }
-      return hours;
+    function getWeatherInfo(code, isDay) {
+      const info = wmoCodes[code] || { label: 'Unknown', type: 'cloudy' };
+      if (!isDay && (info.type === 'clear' || info.type === 'cloudy')) info.type = 'night';
+      return info;
     }
 
-    function generateDaily(baseTemp) {
-      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const today = new Date().getDay();
-      const result = [];
-      for (let i = 0; i < 7; i++) {
-        const d = (today + i) % 7;
-        const offset = (Math.random() - 0.5) * 6;
-        const hi = +(baseTemp + 3 + offset).toFixed(1);
-        const lo = +(baseTemp - 3 + offset * 0.5).toFixed(1);
-        result.push({ day: days[d], hi, lo });
-      }
-      return result;
+    // ====== TEMP CONVERSION ======
+    function toK(c) { return c + 273.15; }
+    function fmtTemp(c) {
+      const val = unit === 'K' ? toK(c) : c;
+      return val.toFixed(1) + (unit === 'K' ? ' K' : '°C');
+    }
+    function fmtTempRaw(c) {
+      return (unit === 'K' ? toK(c) : c).toFixed(1);
+    }
+
+    // ====== ICONS ======
+    function getIcon(type, size) {
+      size = size || 24;
+      const s = 'width="' + size + '" height="' + size + '"';
+      if (type === 'clear' || type === 'sunny') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      if (type === 'night') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M12 3c.5 3.5 3.5 6.5 7 7-3.5.5-6.5 3.5-7 7-.5-3.5-3.5-6.5-7-7 3.5-.5 6.5-3.5 7-7z" fill="currentColor"/></svg>';
+      if (type === 'cloudy') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" fill="currentColor"/></svg>';
+      if (type === 'rain') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M19 10c-.8-3.4-3.8-6-7.4-6-3.8 0-7 2.7-7.7 6.3A5 5 0 006 21h13a5 5 0 000-10z" fill="currentColor"/><path d="M8 21v2M12 21v2M16 21v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      if (type === 'snow') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M19 10c-.8-3.4-3.8-6-7.4-6-3.8 0-7 2.7-7.7 6.3A5 5 0 006 21h13a5 5 0 000-10z" fill="currentColor"/><circle cx="8" cy="23" r="1" fill="currentColor"/><circle cx="12" cy="23" r="1" fill="currentColor"/><circle cx="16" cy="23" r="1" fill="currentColor"/></svg>';
+      if (type === 'storm') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M19 10c-.8-3.4-3.8-6-7.4-6-3.8 0-7 2.7-7.7 6.3A5 5 0 006 21h13a5 5 0 000-10z" fill="currentColor"/><path d="M13 21l-2 4h3l-2 4" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      if (type === 'fog') return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><path d="M4 15h16M4 18h16M4 12h16M4 9h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      return '<svg ' + s + ' viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/></svg>';
     }
 
     function getVisual(type) {
-      if (type === 'sunny' || type === 'clear') return '<div class="kw-sun"></div>';
-      if (type === 'cloudy') return '<div class="kw-cloudy"></div>';
-      if (type === 'rain') return '<div class="kw-rain"><div class="kw-cloudy"></div><div class="kw-rain-drops"></div></div>';
-      if (type === 'snow') return '<div class="kw-snow"><div class="kw-cloudy"></div><div class="kw-snow-flakes"></div></div>';
-      if (type === 'storm') return '<div class="kw-storm"><div class="kw-cloudy"></div><div class="kw-bolt"></div></div>';
-      return '<div class="kw-sun"></div>';
+      if (type === 'clear' || type === 'sunny') return '<div class="weather-visual"><div class="vis-sun"></div></div>';
+      if (type === 'night') return '<div class="weather-visual"><div class="vis-moon"></div></div>';
+      if (type === 'cloudy') return '<div class="weather-visual"><div class="vis-cloud"></div></div>';
+      if (type === 'rain') return '<div class="weather-visual vis-rain"><div class="vis-cloud"></div><div class="rain-drops"></div></div>';
+      if (type === 'snow') return '<div class="weather-visual vis-snow"><div class="vis-cloud"></div><div class="snow-flakes"></div></div>';
+      if (type === 'storm') return '<div class="weather-visual vis-storm"><div class="vis-cloud"></div><div class="bolt"></div></div>';
+      if (type === 'fog') return '<div class="weather-visual vis-fog"><div class="fog-layer"></div><div class="fog-layer"></div><div class="fog-layer"></div></div>';
+      return '<div class="weather-visual"><div class="vis-sun"></div></div>';
     }
 
-    function getConditionIcon(type) {
-      if (type === 'sunny' || type === 'clear') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M5.6 5.6L4.2 4.2M19.8 19.8L18.4 18.4M5.6 18.4L4.2 19.8M19.8 4.2L18.4 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-      if (type === 'cloudy') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 18C3.79086 18 2 16.2091 2 14C2 11.7909 3.79086 10 6 10C6.34207 10 6.67217 10.0447 6.98556 10.1293C7.61869 7.20219 10.2022 5 13.5 5C17.0899 5 20 7.91015 20 11.5C20 11.7236 19.9904 11.9447 19.9716 12.1625C21.7543 12.5513 23 14.1392 23 16C23 18.2091 21.2091 20 19 20H6Z" fill="currentColor"/></svg>';
-      if (type === 'rain') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><path d="M8 20L7 22M12 20L11 22M16 20L15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-      if (type === 'snow') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><circle cx="8" cy="21" r="1" fill="currentColor"/><circle cx="12" cy="21" r="1" fill="currentColor"/><circle cx="16" cy="21" r="1" fill="currentColor"/></svg>';
-      if (type === 'storm') return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C6.34207 8 6.67217 8.04467 6.98556 8.12929C7.61869 5.20219 10.2022 3 13.5 3C17.0899 3 20 5.91015 20 9.5C20 9.72355 19.9904 9.94473 19.9716 10.1625C21.7543 10.5513 23 12.1392 23 14C23 16.2091 21.2091 18 19 18H6Z" fill="currentColor"/><path d="M13 20L11 23H14L12 26" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/></svg>';
+    // ====== RECOMMENDATIONS ======
+    function getRecommendation(tempC, code, wind, uv) {
+      const k = toK(tempC);
+      if (code >= 95) return 'Severe weather alert — stay indoors and secure loose objects';
+      if (code >= 71 && code <= 86) return 'Snowy conditions — wear warm layers and waterproof boots';
+      if (code >= 61 && code <= 67) return 'Rain expected — bring an umbrella and waterproof jacket';
+      if (k > 305) return 'Extreme heat — stay hydrated, avoid direct sun, seek shade';
+      if (k > 298) return 'Warm day — light clothing recommended, sunscreen advised';
+      if (k > 293) return 'Pleasant weather — perfect for outdoor activities';
+      if (k > 288) return 'Mild conditions — a light jacket should suffice';
+      if (k > 283) return 'Cool weather — wear a jacket, consider layers';
+      if (k > 278) return 'Cold — bundle up with coat, scarf, and gloves';
+      if (k > 273) return 'Freezing — heavy winter gear essential, watch for ice';
+      return 'Sub-zero conditions — extreme cold gear required, limit outdoor exposure';
     }
 
-    function renderChart(hourly) {
-      const svg = document.getElementById('kw-chart');
-      const temps = hourly.map(h => h.temp);
-      const min = Math.min(...temps) - 1;
-      const max = Math.max(...temps) + 1;
+    // ====== WIND DIRECTION ======
+    function windDir(deg) {
+      const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+      return dirs[Math.round(deg / 22.5) % 16];
+    }
+
+    // ====== UV ======
+    function uvClass(uv) {
+      if (uv <= 2) return 'uv-low';
+      if (uv <= 5) return 'uv-moderate';
+      if (uv <= 7) return 'uv-moderate';
+      return 'uv-high';
+    }
+    function uvLabel(uv) {
+      if (uv <= 2) return 'Low';
+      if (uv <= 5) return 'Moderate';
+      if (uv <= 7) return 'High';
+      if (uv <= 10) return 'Very high';
+      return 'Extreme';
+    }
+
+    // ====== AQI ======
+    function aqiLabel(aqi) {
+      if (aqi <= 50) return { label: 'Good', class: 'aqi-good' };
+      if (aqi <= 100) return { label: 'Moderate', class: 'aqi-moderate' };
+      if (aqi <= 150) return { label: 'Unhealthy for sensitive', class: 'aqi-unhealthy' };
+      if (aqi <= 200) return { label: 'Unhealthy', class: 'aqi-unhealthy' };
+      if (aqi <= 300) return { label: 'Very unhealthy', class: 'aqi-unhealthy' };
+      return { label: 'Hazardous', class: 'aqi-unhealthy' };
+    }
+
+    // ====== FALLBACK DATA ======
+    function generateFallback(lat, lon) {
+      const baseTemp = 15 + Math.sin(lat * 0.1) * 15;
+      const now = new Date();
+      const hourly = { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [] };
+      for (let i = 0; i < 24; i++) {
+        const t = new Date(now); t.setHours(t.getHours() + i);
+        hourly.time.push(t.toISOString());
+        hourly.temperature_2m.push(baseTemp + Math.sin((t.getHours() - 6) * Math.PI / 12) * 4 + (Math.random() - 0.5) * 2);
+        hourly.weather_code.push([0,1,2,3,61,71,95][Math.floor(Math.random() * 7)]);
+        hourly.precipitation_probability.push(Math.floor(Math.random() * 60));
+      }
+      const daily = { time: [], weather_code: [], temperature_2m_max: [], temperature_2m_min: [], sunrise: [], sunset: [], uv_index_max: [], precipitation_probability_max: [] };
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      for (let i = 0; i < 7; i++) {
+        const t = new Date(now); t.setDate(t.getDate() + i);
+        daily.time.push(t.toISOString().split('T')[0]);
+        daily.weather_code.push([0,1,2,3,61,71,95][Math.floor(Math.random() * 7)]);
+        const off = (Math.random() - 0.5) * 6;
+        daily.temperature_2m_max.push(baseTemp + 3 + off);
+        daily.temperature_2m_min.push(baseTemp - 3 + off * 0.5);
+        daily.sunrise.push(t.toISOString().split('T')[0] + 'T06:00');
+        daily.sunset.push(t.toISOString().split('T')[0] + 'T20:00');
+        daily.uv_index_max.push(Math.floor(Math.random() * 10));
+        daily.precipitation_probability_max.push(Math.floor(Math.random() * 80));
+      }
+      return {
+        current: { temperature_2m: baseTemp, relative_humidity_2m: 60 + Math.floor(Math.random() * 30), apparent_temperature: baseTemp - 2, is_day: 1, precipitation: 0, weather_code: 2, wind_speed_10m: 10 + Math.floor(Math.random() * 20), wind_direction_10m: Math.floor(Math.random() * 360), pressure_msl: 1010 + Math.floor(Math.random() * 20) },
+        hourly: hourly, daily: daily
+      };
+    }
+
+    // ====== FETCH WEATHER ======
+    async function fetchWeather(lat, lon) {
+      isLoading = true;
+      document.getElementById('hero').style.opacity = '0.6';
+      try {
+        const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+          '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl' +
+          '&hourly=temperature_2m,weather_code,precipitation_probability' +
+          '&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max' +
+          '&timezone=auto&forecast_days=7';
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Weather API error: ' + res.status);
+        weatherData = await res.json();
+        document.getElementById('error-banner').classList.remove('show');
+      } catch (err) {
+        console.error(err);
+        document.getElementById('error-text').textContent = 'Unable to fetch live data. Using fallback values.';
+        document.getElementById('error-banner').classList.add('show');
+        weatherData = generateFallback(lat, lon);
+      }
+      // Fetch AQI
+      try {
+        const aqiUrl = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + lat + '&longitude=' + lon + '&current=us_aqi,pm10,pm2_5,nitrogen_dioxide,ozone';
+        const aqiRes = await fetch(aqiUrl);
+        if (aqiRes.ok) aqiData = await aqiRes.json();
+        else aqiData = null;
+      } catch (e) { aqiData = null; }
+      isLoading = false;
+      document.getElementById('hero').style.opacity = '1';
+      render();
+      updateURL();
+    }
+
+    // ====== GEOCODING ======
+    async function searchCities(query) {
+      if (!query || query.length < 2) return [];
+      try {
+        const res = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(query) + '&count=8&language=en&format=json');
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.results || [];
+      } catch (e) { return []; }
+    }
+
+    // ====== RENDER ======
+    function render() {
+      if (!weatherData) return;
+      const cur = weatherData.current;
+      const info = getWeatherInfo(cur.weather_code, cur.is_day);
+
+      // Background
+      document.getElementById('bg-layer').className = 'bg-layer ' + info.type;
+      updateParticles(info.type);
+
+      // Hero
+      document.getElementById('city-name').textContent = currentCity;
+      document.getElementById('country-name').textContent = currentCountry;
+      document.getElementById('temp-value').textContent = fmtTempRaw(cur.temperature_2m);
+      document.getElementById('temp-unit').textContent = unit === 'K' ? 'K' : '°C';
+      document.getElementById('feels-like').textContent = 'Feels like ' + fmtTemp(cur.apparent_temperature);
+      document.getElementById('condition-icon').innerHTML = getIcon(info.type, 28);
+      document.getElementById('condition-text').textContent = info.label;
+      document.getElementById('visual').innerHTML = getVisual(info.type);
+
+      // Recommendation
+      document.getElementById('recommendation-text').textContent = getRecommendation(cur.temperature_2m, cur.weather_code, cur.wind_speed_10m, weatherData.daily.uv_index_max ? weatherData.daily.uv_index_max[0] : 0);
+
+      // Kelvin fact
+      const factIdx = Math.floor(Math.random() * kelvinFacts.length);
+      document.getElementById('fact-text').innerHTML = kelvinFacts[factIdx];
+
+      // Hi/Lo
+      if (weatherData.daily && weatherData.daily.temperature_2m_max && weatherData.daily.temperature_2m_max.length > 0) {
+        document.getElementById('hi-temp').textContent = fmtTemp(weatherData.daily.temperature_2m_max[0]);
+        document.getElementById('lo-temp').textContent = fmtTemp(weatherData.daily.temperature_2m_min[0]);
+      }
+
+      // Precip
+      const precipRow = document.getElementById('precip-row');
+      if (weatherData.daily && weatherData.daily.precipitation_probability_max && weatherData.daily.precipitation_probability_max[0] > 0) {
+        precipRow.style.display = 'flex';
+        document.getElementById('precip-val').textContent = weatherData.daily.precipitation_probability_max[0] + '% rain';
+      } else {
+        precipRow.style.display = 'none';
+      }
+
+      // Weather alert
+      const alertBanner = document.getElementById('alert-banner');
+      if (cur.weather_code >= 95 || (weatherData.daily && weatherData.daily.precipitation_probability_max && weatherData.daily.precipitation_probability_max[0] > 80)) {
+        alertBanner.classList.add('show');
+        document.getElementById('alert-title').textContent = cur.weather_code >= 95 ? 'Severe Weather Alert' : 'Heavy Rain Warning';
+        document.getElementById('alert-text').textContent = cur.weather_code >= 95 ? 'Thunderstorm activity expected. Seek shelter and avoid outdoor activities.' : 'High probability of heavy rainfall. Carry waterproof gear.';
+        document.getElementById('alert-time').textContent = 'Issued: ' + new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:false});
+      } else {
+        alertBanner.classList.remove('show');
+      }
+
+      renderHourly();
+      renderDaily();
+      renderChart();
+
+      // Details
+      document.getElementById('wind-value').textContent = cur.wind_speed_10m + ' km/h';
+      document.getElementById('wind-dir').textContent = windDir(cur.wind_direction_10m);
+      document.getElementById('compass-needle').style.transform = 'translate(-50%, -100%) rotate(' + cur.wind_direction_10m + 'deg)';
+      document.getElementById('humidity-value').textContent = cur.relative_humidity_2m + '%';
+      const dewpoint = cur.temperature_2m - ((100 - cur.relative_humidity_2m) / 5);
+      document.getElementById('humidity-sub').textContent = 'Dew point ' + fmtTemp(dewpoint);
+      document.getElementById('pressure-value').textContent = cur.pressure_msl + ' hPa';
+      document.getElementById('pressure-sub').textContent = cur.pressure_msl > 1020 ? 'High' : cur.pressure_msl < 1005 ? 'Low' : 'Steady';
+
+      const uv = weatherData.daily && weatherData.daily.uv_index_max ? weatherData.daily.uv_index_max[0] : 0;
+      const uvEl = document.getElementById('uv-value');
+      uvEl.textContent = uv;
+      uvEl.className = 'detail-value ' + uvClass(uv);
+      document.getElementById('uv-sub').textContent = uvLabel(uv);
+      document.getElementById('visibility-value').textContent = (cur.is_day ? '10+' : '8+') + ' km';
+
+      // Sun times
+      if (weatherData.daily && weatherData.daily.sunrise && weatherData.daily.sunrise.length > 0) {
+        const rise = new Date(weatherData.daily.sunrise[0]);
+        const set = new Date(weatherData.daily.sunset[0]);
+        document.getElementById('sunrise').textContent = rise.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:false});
+        document.getElementById('sunset').textContent = set.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:false});
+      }
+
+      // AQI
+      renderAQI();
+
+      // Cities chips
+      renderCities();
+
+      // Favorites
+      renderFavorites();
+    }
+
+    function renderHourly() {
+      const el = document.getElementById('hourly');
+      if (!weatherData.hourly || !weatherData.hourly.time) { el.innerHTML = ''; return; }
+      const now = new Date();
+      const currentHour = now.getHours();
+      let html = '';
+      const times = weatherData.hourly.time;
+      const temps = weatherData.hourly.temperature_2m;
+      const codes = weatherData.hourly.weather_code;
+      const precips = weatherData.hourly.precipitation_probability;
+      for (let i = 0; i < Math.min(24, times.length); i++) {
+        const t = new Date(times[i]);
+        const h = t.getHours();
+        const isNow = h === currentHour;
+        const info = getWeatherInfo(codes[i] || 0, 1);
+        html += '<div class="hour-card ' + (isNow ? 'now' : '') + '">' +
+          '<div class="hour-time ' + (isNow ? 'now' : '') + '">' + (isNow ? 'Now' : h + ':00') + '</div>' +
+          '<div class="hour-icon">' + getIcon(info.type, 22) + '</div>' +
+          '<div class="hour-temp">' + fmtTempRaw(temps[i]) + '</div>' +
+          (precips && precips[i] > 10 ? '<div class="hour-precip">' + precips[i] + '%</div>' : '') +
+          '</div>';
+      }
+      el.innerHTML = html;
+    }
+
+    function renderDaily() {
+      const el = document.getElementById('daily');
+      if (!weatherData.daily || !weatherData.daily.time) { el.innerHTML = ''; return; }
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const times = weatherData.daily.time;
+      const maxs = weatherData.daily.temperature_2m_max;
+      const mins = weatherData.daily.temperature_2m_min;
+      const codes = weatherData.daily.weather_code;
+      const allTemps = [];
+      for (let i = 0; i < maxs.length; i++) { allTemps.push(maxs[i], mins[i]); }
+      const dMin = Math.min.apply(null, allTemps);
+      const dMax = Math.max.apply(null, allTemps);
+      const dRange = dMax - dMin || 1;
+      let html = '';
+      for (let i = 0; i < times.length; i++) {
+        const d = new Date(times[i]);
+        const dayName = i === 0 ? 'Today' : days[d.getDay()];
+        const left = ((mins[i] - dMin) / dRange) * 100;
+        const width = ((maxs[i] - mins[i]) / dRange) * 100;
+        html += '<div class="day-row">' +
+          '<div class="day-name">' + dayName + '</div>' +
+          '<div class="day-bar-wrap"><div class="day-bar-fill" style="left:' + left + '%;width:' + width + '%"></div></div>' +
+          '<div class="day-lo">' + fmtTempRaw(mins[i]) + '</div>' +
+          '<div class="day-hi">' + fmtTempRaw(maxs[i]) + '</div>' +
+          '</div>';
+      }
+      el.innerHTML = html;
+    }
+
+    function renderChart() {
+      const svg = document.getElementById('chart');
+      const tooltip = document.getElementById('chart-tooltip');
+      if (!weatherData.hourly || !weatherData.hourly.time) { svg.innerHTML = ''; return; }
+      const temps = weatherData.hourly.temperature_2m.slice(0, 24);
+      const times = weatherData.hourly.time.slice(0, 24);
+      const min = Math.min.apply(null, temps) - 1;
+      const max = Math.max.apply(null, temps) + 1;
       const range = max - min;
-      const w = 600, h = 160, pad = 20;
+      const w = 700, h = 180, pad = 24;
       const cw = w - pad * 2, ch = h - pad * 2;
 
       let path = '';
-      let area = '';
       const pts = [];
       for (let i = 0; i < temps.length; i++) {
         const x = pad + (i / (temps.length - 1)) * cw;
         const y = pad + ch - ((temps[i] - min) / range) * ch;
-        pts.push({x, y, temp: temps[i]});
-        if (i === 0) { path += `M ${x} ${y}`; area += `M ${x} ${h}`; }
-        else { path += ` L ${x} ${y}`; }
+        pts.push({x, y, temp: temps[i], time: times[i]});
+        if (i === 0) path += 'M ' + x + ' ' + y;
+        else path += ' L ' + x + ' ' + y;
       }
-      area = `M ${pad} ${h} ` + pts.map(p => `L ${p.x} ${p.y}`).join(' ') + ` L ${w - pad} ${h} Z`;
+      let area = 'M ' + pad + ' ' + h + ' ';
+      for (let i = 0; i < pts.length; i++) area += 'L ' + pts[i].x + ' ' + pts[i].y + ' ';
+      area += 'L ' + (w - pad) + ' ' + h + ' Z';
 
       let dots = '';
-      for (const p of pts) {
-        dots += `<circle cx="${p.x}" cy="${p.y}" r="3" fill="#3b82f6"/>`;
-        if (p.x % 80 < 10) {
-          dots += `<text x="${p.x}" y="${p.y - 10}" text-anchor="middle" font-size="11" fill="#a0a0a8" font-family="var(--kimi-font-sans)">${p.temp.toFixed(1)}</text>`;
+      let hoverZones = '';
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        dots += '<circle cx="' + p.x + '" cy="' + p.y + '" r="3" fill="#3b82f6"/>';
+        if (i % 3 === 0) {
+          dots += '<text x="' + p.x + '" y="' + (p.y - 12) + '" text-anchor="middle" font-size="11" fill="#a8a8b3" font-family="var(--font-sans)">' + fmtTempRaw(p.temp) + '</text>';
         }
+        hoverZones += '<rect x="' + (p.x - cw / temps.length / 2) + '" y="0" width="' + (cw / temps.length) + '" height="' + h + '" fill="transparent" data-i="' + i + '" style="cursor:pointer"/>';
       }
 
-      svg.innerHTML = `
-        <defs>
-          <linearGradient id="kwgrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
-            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <path d="${area}" fill="url(#kwgrad)"/>
-        <path d="${path}" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        ${dots}
-      `;
-    }
+      svg.innerHTML = '<defs><linearGradient id="kwgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/></linearGradient></defs>' +
+        '<path d="' + area + '" fill="url(#kwgrad)"/>' +
+        '<path d="' + path + '" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        dots + hoverZones;
 
-    function render() {
-      const data = cities[currentCity];
-      document.getElementById('kw-city').textContent = currentCity;
-      document.getElementById('kw-country').textContent = data.country;
-      document.getElementById('kw-temp').textContent = data.temp.toFixed(1);
-      document.getElementById('kw-condition').innerHTML = getConditionIcon(data.type) + '<span>' + data.condition + '</span>';
-      document.getElementById('kw-hi').textContent = data.hi.toFixed(1) + ' K';
-      document.getElementById('kw-lo').textContent = data.lo.toFixed(1) + ' K';
-      document.getElementById('kw-visual').innerHTML = getVisual(data.type);
-
-      const now = new Date();
-      const opts = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('kw-now').textContent = now.toLocaleDateString('en-US', opts);
-
-      const hourly = generateHourly(data.temp);
-      const hourlyEl = document.getElementById('kw-hourly');
-      hourlyEl.innerHTML = hourly.map(h => `
-        <div class="kw-hour">
-          <div class="kw-hour-time">${h.hour}:00</div>
-          <div class="kw-hour-icon">${getConditionIcon(Math.random() > 0.5 ? data.type : 'cloudy')}</div>
-          <div class="kw-hour-temp">${h.temp.toFixed(1)}</div>
-        </div>
-      `).join('');
-
-      const daily = generateDaily(data.temp);
-      const allTemps = daily.flatMap(d => [d.hi, d.lo]);
-      const dMin = Math.min(...allTemps), dMax = Math.max(...allTemps);
-      const dRange = dMax - dMin || 1;
-      const dailyEl = document.getElementById('kw-daily');
-      dailyEl.innerHTML = daily.map(d => {
-        const left = ((d.lo - dMin) / dRange) * 100;
-        const width = ((d.hi - d.lo) / dRange) * 100;
-        return `
-          <div class="kw-day-row">
-            <div class="kw-day-name">${d.day}</div>
-            <div class="kw-day-bar"><div class="kw-day-bar-fill" style="left:${left}%; width:${width}%"></div></div>
-            <div class="kw-day-lo">${d.lo.toFixed(1)}</div>
-            <div class="kw-day-hi">${d.hi.toFixed(1)}</div>
-          </div>
-        `;
-      }).join('');
-
-      renderChart(hourly);
-
-      const details = [
-        { label: 'Humidity', value: data.humidity + '%' },
-        { label: 'Wind', value: data.wind + ' km/h' },
-        { label: 'Pressure', value: data.pressure + ' hPa' },
-        { label: 'Visibility', value: data.visibility + ' km' },
-        { label: 'UV index', value: data.uv },
-        { label: 'Dew point', value: data.dewpoint.toFixed(1) + ' K' }
-      ];
-      document.getElementById('kw-details').innerHTML = details.map(d => `
-        <div class="kw-detail">
-          <div class="kw-detail-label">${d.label}</div>
-          <div class="kw-detail-value">${d.value}</div>
-        </div>
-      `).join('');
-
-      const cityNames = Object.keys(cities);
-      document.getElementById('kw-cities').innerHTML = cityNames.map(c => `
-        <div class="kw-chip ${c === currentCity ? 'active' : ''}" data-city="${c}">${c}</div>
-      `).join('');
-
-      document.querySelectorAll('.kw-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-          currentCity = chip.dataset.city;
-          render();
+      svg.querySelectorAll('rect[data-i]').forEach(function(rect) {
+        rect.addEventListener('mouseenter', function(e) {
+          const idx = parseInt(this.getAttribute('data-i'));
+          const p = pts[idx];
+          const t = new Date(p.time);
+          tooltip.innerHTML = '<strong>' + fmtTemp(p.temp) + '</strong> at ' + t.getHours() + ':00';
+          tooltip.style.left = (p.x / 700 * 100) + '%';
+          tooltip.style.top = (p.y / 180 * 100 - 15) + '%';
+          tooltip.style.opacity = '1';
+        });
+        rect.addEventListener('mouseleave', function() {
+          tooltip.style.opacity = '0';
         });
       });
     }
 
-    const searchInput = document.getElementById('kw-search');
-    const suggestions = document.getElementById('kw-suggestions');
+    function renderAQI() {
+      const valEl = document.getElementById('aqi-value');
+      const labelEl = document.getElementById('aqi-label');
+      const marker = document.getElementById('aqi-marker');
+      const pm25 = document.getElementById('aqi-pm25');
+      const pm10 = document.getElementById('aqi-pm10');
+      const o3 = document.getElementById('aqi-o3');
+      const no2 = document.getElementById('aqi-no2');
 
-    searchInput.addEventListener('input', () => {
-      const val = searchInput.value.trim().toLowerCase();
-      if (!val) { suggestions.classList.remove('show'); return; }
-      const matches = Object.keys(cities).filter(c => c.toLowerCase().includes(val));
-      if (matches.length) {
-        suggestions.innerHTML = matches.map(c => `<div class="kw-suggestion" data-city="${c}">${c}</div>`).join('');
-        suggestions.classList.add('show');
-        suggestions.querySelectorAll('.kw-suggestion').forEach(s => {
-          s.addEventListener('click', () => {
-            currentCity = s.dataset.city;
-            searchInput.value = '';
-            suggestions.classList.remove('show');
-            render();
-          });
-        });
+      if (aqiData && aqiData.current) {
+        const aqi = aqiData.current.us_aqi || 42;
+        const info = aqiLabel(aqi);
+        valEl.textContent = aqi;
+        labelEl.textContent = info.label;
+        labelEl.className = 'aqi-label ' + info.class;
+        marker.style.left = Math.min(100, Math.max(0, (aqi / 300) * 100)) + '%';
+        pm25.textContent = aqiData.current.pm2_5 || '--';
+        pm10.textContent = aqiData.current.pm10 || '--';
+        o3.textContent = aqiData.current.ozone || '--';
+        no2.textContent = aqiData.current.nitrogen_dioxide || '--';
       } else {
-        suggestions.classList.remove('show');
+        valEl.textContent = '--';
+        labelEl.textContent = 'No data';
+        labelEl.className = 'aqi-label aqi-good';
+        marker.style.left = '0%';
+        pm25.textContent = '--'; pm10.textContent = '--'; o3.textContent = '--'; no2.textContent = '--';
       }
-    });
+    }
 
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const val = searchInput.value.trim().toLowerCase();
-        const match = Object.keys(cities).find(c => c.toLowerCase().includes(val));
-        if (match) {
-          currentCity = match;
-          searchInput.value = '';
-          suggestions.classList.remove('show');
-          render();
+    function renderCities() {
+      const el = document.getElementById('cities-wrap');
+      let html = '';
+      for (let i = 0; i < popularCities.length; i++) {
+        const c = popularCities[i];
+        html += '<div class="city-chip ' + (c.name === currentCity ? 'active' : '') + '" data-city="' + c.name + '" data-lat="' + c.lat + '" data-lon="' + c.lon + '" data-country="' + c.country + '">' + c.name + '</div>';
+      }
+      el.innerHTML = html;
+      el.querySelectorAll('.city-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          currentCity = this.dataset.city;
+          currentLat = parseFloat(this.dataset.lat);
+          currentLon = parseFloat(this.dataset.lon);
+          currentCountry = this.dataset.country;
+          addToRecent(currentCity, currentLat, currentLon, currentCountry);
+          fetchWeather(currentLat, currentLon);
+        });
+      });
+    }
+
+    // ====== FAVORITES ======
+    function renderFavorites() {
+      const list = document.getElementById('fav-list');
+      if (favorites.length === 0) {
+        list.innerHTML = '<div class="fav-empty">No saved locations yet.<br>Click "+ Add current location" to save this city.</div>';
+        return;
+      }
+      let html = '';
+      for (let i = 0; i < favorites.length; i++) {
+        const f = favorites[i];
+        html += '<div class="fav-item" data-city="' + f.name + '" data-lat="' + f.lat + '" data-lon="' + f.lon + '" data-country="' + f.country + '">' +
+          '<div><div class="fav-item-name">' + f.name + '</div><div class="fav-item-temp">' + f.country + '</div></div>' +
+          '<button class="fav-item-remove" data-idx="' + i + '" aria-label="Remove">&times;</button>' +
+          '</div>';
+      }
+      list.innerHTML = html;
+      list.querySelectorAll('.fav-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          if (e.target.classList.contains('fav-item-remove')) return;
+          currentCity = this.dataset.city;
+          currentLat = parseFloat(this.dataset.lat);
+          currentLon = parseFloat(this.dataset.lon);
+          currentCountry = this.dataset.country;
+          closeFavDrawer();
+          fetchWeather(currentLat, currentLon);
+        });
+      });
+      list.querySelectorAll('.fav-item-remove').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const idx = parseInt(this.dataset.idx);
+          favorites.splice(idx, 1);
+          localStorage.setItem('kelvincast_favorites', JSON.stringify(favorites));
+          renderFavorites();
+        });
+      });
+    }
+
+    function addToFavorites() {
+      const exists = favorites.some(function(f) { return f.name === currentCity; });
+      if (exists) { showToast(currentCity + ' is already saved'); return; }
+      favorites.push({ name: currentCity, lat: currentLat, lon: currentLon, country: currentCountry });
+      localStorage.setItem('kelvincast_favorites', JSON.stringify(favorites));
+      renderFavorites();
+      showToast(currentCity + ' saved to favorites');
+    }
+
+    function openFavDrawer() {
+      document.getElementById('fav-drawer').classList.add('open');
+      document.getElementById('fav-overlay').classList.add('open');
+      renderFavorites();
+    }
+    function closeFavDrawer() {
+      document.getElementById('fav-drawer').classList.remove('open');
+      document.getElementById('fav-overlay').classList.remove('open');
+    }
+
+    // ====== RECENT SEARCHES ======
+    function addToRecent(name, lat, lon, country) {
+      recentSearches = recentSearches.filter(function(r) { return r.name !== name; });
+      recentSearches.unshift({ name: name, lat: lat, lon: lon, country: country });
+      if (recentSearches.length > 5) recentSearches = recentSearches.slice(0, 5);
+      localStorage.setItem('kelvincast_recent', JSON.stringify(recentSearches));
+    }
+
+    // ====== PARTICLES ======
+    function updateParticles(type) {
+      const container = document.getElementById('particles');
+      container.innerHTML = '';
+      if (type !== 'rain' && type !== 'snow') return;
+      const count = type === 'rain' ? 30 : 20;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (type === 'rain' ? 0.5 + Math.random() * 0.5 : 2 + Math.random() * 3) + 's';
+        p.style.animationDelay = Math.random() * 3 + 's';
+        if (type === 'rain') {
+          p.style.width = '2px'; p.style.height = '12px';
+          p.style.background = 'linear-gradient(180deg, rgba(59,130,246,0.4), transparent)';
+          p.style.borderRadius = '1px';
+        } else {
+          p.style.width = '4px'; p.style.height = '4px';
+          p.style.background = 'rgba(255,255,255,0.5)';
+          p.style.borderRadius = '50%';
         }
+        container.appendChild(p);
+      }
+    }
+
+    // ====== SEARCH ======
+    const searchInput = document.getElementById('search-input');
+    const suggestions = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', function() {
+      const val = this.value.trim();
+      if (searchTimeout) clearTimeout(searchTimeout);
+      if (!val || val.length < 2) { suggestions.classList.remove('show'); return; }
+      searchTimeout = setTimeout(async function() {
+        let html = '';
+        if (recentSearches.length > 0) {
+          const filtered = recentSearches.filter(function(r) { return r.name.toLowerCase().includes(val.toLowerCase()); });
+          if (filtered.length > 0) {
+            html += '<div class="recent-label">Recent</div>';
+            for (let i = 0; i < filtered.length; i++) {
+              const r = filtered[i];
+              html += '<div class="suggestion" data-name="' + r.name + '" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-country="' + r.country + '">' +
+                '<span class="suggestion-flag">🕐</span>' +
+                '<div><div class="suggestion-name">' + r.name + '</div><div class="suggestion-meta">' + r.country + '</div></div>' +
+                '</div>';
+            }
+          }
+        }
+        const results = await searchCities(val);
+        if (results.length > 0) {
+          if (html) html += '<div class="recent-label">Search results</div>';
+          for (let i = 0; i < results.length; i++) {
+            const r = results[i];
+            const flag = r.country_code ? String.fromCodePoint(0x1F1E6 + r.country_code.charCodeAt(0) - 65, 0x1F1E6 + r.country_code.charCodeAt(1) - 65) : '🌍';
+            html += '<div class="suggestion" data-name="' + (r.name || '') + '" data-lat="' + r.latitude + '" data-lon="' + r.longitude + '" data-country="' + (r.country || '') + '">' +
+              '<span class="suggestion-flag">' + flag + '</span>' +
+              '<div><div class="suggestion-name">' + (r.name || '') + '</div><div class="suggestion-meta">' + (r.admin1 || '') + ', ' + (r.country || '') + '</div></div>' +
+              '</div>';
+          }
+        }
+        if (html) {
+          suggestions.innerHTML = html;
+          suggestions.classList.add('show');
+          suggestions.querySelectorAll('.suggestion').forEach(function(s) {
+            s.addEventListener('click', function() {
+              currentCity = this.dataset.name;
+              currentLat = parseFloat(this.dataset.lat);
+              currentLon = parseFloat(this.dataset.lon);
+              currentCountry = this.dataset.country;
+              searchInput.value = '';
+              suggestions.classList.remove('show');
+              addToRecent(currentCity, currentLat, currentLon, currentCountry);
+              fetchWeather(currentLat, currentLon);
+            });
+          });
+        } else {
+          suggestions.classList.remove('show');
+        }
+      }, 300);
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (!val) return;
+        const first = suggestions.querySelector('.suggestion');
+        if (first) first.click();
       }
     });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.kw-search-wrap')) suggestions.classList.remove('show');
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrap')) suggestions.classList.remove('show');
     });
 
-    document.getElementById('kw-refresh').addEventListener('click', () => {
-      const btn = document.getElementById('kw-refresh');
+    // ====== UNIT TOGGLE ======
+    document.getElementById('btn-k').addEventListener('click', function() {
+      if (unit === 'K') return;
+      unit = 'K';
+      document.getElementById('btn-k').classList.add('active');
+      document.getElementById('btn-c').classList.remove('active');
+      render();
+    });
+    document.getElementById('btn-c').addEventListener('click', function() {
+      if (unit === 'C') return;
+      unit = 'C';
+      document.getElementById('btn-c').classList.add('active');
+      document.getElementById('btn-k').classList.remove('active');
+      render();
+    });
+
+    // ====== REFRESH ======
+    document.getElementById('btn-refresh').addEventListener('click', function() {
+      const btn = this;
       btn.style.transform = 'rotate(360deg)';
       btn.style.transition = 'transform 0.6s ease';
-      setTimeout(() => { btn.style.transform = 'rotate(0deg)'; render(); }, 600);
+      setTimeout(function() { btn.style.transform = 'rotate(0deg)'; }, 600);
+      fetchWeather(currentLat, currentLon);
     });
 
-    render();
+    // ====== GEOLOCATION ======
+    document.getElementById('btn-locate').addEventListener('click', function() {
+      if (!navigator.geolocation) { showToast('Geolocation not supported'); return; }
+      navigator.geolocation.getCurrentPosition(async function(pos) {
+        currentLat = pos.coords.latitude;
+        currentLon = pos.coords.longitude;
+        currentCity = 'My Location';
+        currentCountry = '';
+        try {
+          const res = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + currentLat + ',' + currentLon + '&count=1');
+          const data = await res.json();
+          if (data.results && data.results[0]) {
+            currentCity = data.results[0].name || 'My Location';
+            currentCountry = data.results[0].country || '';
+          }
+        } catch (e) {}
+        fetchWeather(currentLat, currentLon);
+      }, function() { showToast('Location access denied'); });
+    });
+
+    // ====== SHARE ======
+    document.getElementById('btn-share').addEventListener('click', async function() {
+      const text = 'Weather in ' + currentCity + ': ' + fmtTemp(weatherData.current.temperature_2m) + ' — ' + getWeatherInfo(weatherData.current.weather_code, weatherData.current.is_day).label + ' | KelvinCast';
+      try { await navigator.clipboard.writeText(text); showToast('Copied to clipboard!'); }
+      catch (e) { showToast('Share text: ' + text); }
+    });
+
+    // ====== FAVORITES DRAWER ======
+    document.getElementById('btn-fav').addEventListener('click', openFavDrawer);
+    document.getElementById('fav-close').addEventListener('click', closeFavDrawer);
+    document.getElementById('fav-overlay').addEventListener('click', closeFavDrawer);
+    document.getElementById('fav-add-current').addEventListener('click', addToFavorites);
+
+    // ====== PWA INSTALL ======
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (!localStorage.getItem('kelvincast_install_dismissed')) {
+        document.getElementById('install-banner').classList.add('show');
+      }
+    });
+    document.getElementById('install-btn').addEventListener('click', async function() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
+        document.getElementById('install-banner').classList.remove('show');
+        showToast('KelvinCast installed!');
+      }
+      deferredPrompt = null;
+    });
+    document.getElementById('install-close').addEventListener('click', function() {
+      document.getElementById('install-banner').classList.remove('show');
+      localStorage.setItem('kelvincast_install_dismissed', '1');
+    });
+
+    // ====== URL STATE ======
+    function updateURL() {
+      const url = new URL(window.location);
+      url.searchParams.set('city', currentCity);
+      url.searchParams.set('lat', currentLat);
+      url.searchParams.set('lon', currentLon);
+      if (currentCountry) url.searchParams.set('country', currentCountry);
+      window.history.replaceState({}, '', url);
+    }
+
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const city = params.get('city');
+      const lat = params.get('lat');
+      const lon = params.get('lon');
+      if (city && lat && lon) {
+        currentCity = city;
+        currentLat = parseFloat(lat);
+        currentLon = parseFloat(lon);
+        currentCountry = params.get('country') || '';
+        return true;
+      }
+      return false;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2500);
+    }
+
+    // ====== INIT ======
+    if (!loadFromURL()) {
+      const last = localStorage.getItem('kelvincast_last');
+      if (last) {
+        try {
+          const parsed = JSON.parse(last);
+          currentCity = parsed.name || currentCity;
+          currentLat = parsed.lat || currentLat;
+          currentLon = parsed.lon || currentLon;
+          currentCountry = parsed.country || currentCountry;
+        } catch (e) {}
+      }
+    }
+
+    fetchWeather(currentLat, currentLon);
+
+    window.addEventListener('beforeunload', function() {
+      localStorage.setItem('kelvincast_last', JSON.stringify({ name: currentCity, lat: currentLat, lon: currentLon, country: currentCountry }));
+    });
   })();
   </script>
 </body>
